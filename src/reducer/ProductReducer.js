@@ -56,7 +56,7 @@ const ProductReducer = (state, action) => {
             return {
               ...state,
               isSingleLoading:false,
-              isError:true,
+              isError: true,
             }; 
   
       default:
@@ -65,4 +65,3 @@ const ProductReducer = (state, action) => {
   };
   
   export default ProductReducer;
-  
