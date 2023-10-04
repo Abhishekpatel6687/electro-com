@@ -6,13 +6,27 @@ const FilterReducer = (state, action) => {
        return curElem.price
       })
 
-      priceArr.sort(function(a, b){return a-b});
-      console.log(priceArr)
+      // priceArr.sort(function(a, b){return a-b});
+      // console.log(priceArr)
+
+      // console.log(Math.max(1,45,7))
+
+      // console.log(Math.max.apply(null,priceArr))// apply method is use to the conver array in integer
+      
+      // ----use to reduce method to find the array highest price-------
+      // let maxPrice = priceArr.reduce((initialVal, curVal) => {
+      //   return Math.max(initialVal, curVal)
+      // },0); // 0 is initial value to compair in array
+      // console.log(maxPrice)
+
+      let maxPrice = Math.max(...priceArr);
+      console.log(maxPrice)
 
       return {
         ...state,
         filter_products: [...action.payload],
         all_products: [...action.payload],
+        filters:{...state.filters, maxPrice, price : maxPrice},
       };
 
     case "SET_GRID_VIEW":
@@ -82,7 +96,7 @@ const FilterReducer = (state, action) => {
       let { all_products } = state;
       let tempFilterProduct = [...all_products];
 
-      const { text, category, company, color } = state.filters;
+      const { text, category, company, color, price } = state.filters;
 
       if (text) {
         tempFilterProduct = tempFilterProduct.filter((curElem) => {
@@ -106,6 +120,13 @@ const FilterReducer = (state, action) => {
         tempFilterProduct = tempFilterProduct.filter((curElem) =>
           curElem.colors.includes(color)
         );
+      }
+
+      if (price===0) {
+        tempFilterProduct = tempFilterProduct.filter((curElem) => curElem.price == price)
+      }else {
+        tempFilterProduct = tempFilterProduct.filter((curElem) => curElem.price <= price)
+
       }
       return {
         ...state,
