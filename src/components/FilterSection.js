@@ -9,6 +9,7 @@ const FilterSection = () => {
     filters: { text, category, color, price, maxPrice, minPrice },
     updateFilterValue,
     all_products,
+    clearFiltes,
   } = useFilterContext();
 
   // get the unique values of each property
@@ -129,7 +130,9 @@ const FilterSection = () => {
         </p>
           <input type="range" name="price" min={minPrice} max={maxPrice} value={price} onChange={updateFilterValue} />
       </div>
-
+      <div className="filter-clear">
+        <Button className="btn" onClick={clearFiltes}>clear Filters</Button>
+      </div>
     </Wrapper>
   );
 };
