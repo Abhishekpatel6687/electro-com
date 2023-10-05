@@ -73,7 +73,7 @@ export const FilterContextProvider = ({ children }) => {
         setGridView,
         setListView,
         sorting,
-        updateFilterValue,
+        updateFilterValue, 
         clearFiltes,
       }}>
       {children}
