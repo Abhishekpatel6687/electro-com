@@ -5,7 +5,7 @@ const CartContext = createContext();
 
 const getLocalCartData = () => {
   let localCartData = localStorage.getItem("AbhiCart");
-  if (localCartData == []) {
+  if ( localCartData === `[]` ) {
     return [];
   } else {
     return JSON.parse(localCartData);
@@ -51,6 +51,7 @@ dispatch({ type:"SET_INCREMENT", payload: id })
 
   useEffect(() => {
     dispatch({ type : "CART_TOTAL_ITEM"})
+    dispatch({ type : "CART_TOTAL_PRICE"})
     localStorage.setItem("AbhiCart", JSON.stringify(state.cart));
   }, [state.cart]);
 
