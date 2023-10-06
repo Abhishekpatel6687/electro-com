@@ -1,4 +1,4 @@
-import React from 'react';
+import React from 'react'; 
 import FormatPrice from "../Helpers/FormatPrice";
 import CartAmountToggle from './CartAmountToggle';
 import { FaTrash } from 'react-icons/fa';
@@ -6,15 +6,16 @@ import { useCartContext } from '../context/Cart_Context';
 
 const CartItem = ({ id, name, image, color, price, amount }) => {
   
-  const {removeItem} = useCartContext();
+  const {removeItem, setDecrease, setIncrement} = useCartContext();
 
-  const setDecrease = () => {
-    // amount > 1 ? setAmount(amount - 1) :setAmount(1);
-  }
+  // const setDecrease = () => {
+  //   amount > 1 ? setAmount(amount - 1) :setAmount(1);
+  // }
 
-  const setIncrease = () => {
-    // amount < stock ? setAmount(amount + 1) : setAmount(stock)
-  }
+  // const setIncrease = () => {
+  //   amount < stock ? setAmount(amount + 1) : setAmount(stock)
+  // }
+
   return (
     <div className='cart-heading grid grid-five-column'>
      <div className='cart-image--name'>  
@@ -37,7 +38,7 @@ const CartItem = ({ id, name, image, color, price, amount }) => {
      </div>
      {/* Quantity */}
      <div>
-     <CartAmountToggle amount={amount} setDecrease={setDecrease} setIncrease={setIncrease} />
+     <CartAmountToggle amount={amount} setDecrease={() => setDecrease(id)} setIncrease={() => setIncrement(id)} />
      </div>
 
      {/* Subtotal */}
