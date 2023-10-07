@@ -21,7 +21,7 @@ const HeroSection = ({ myData }) => {
          {/* our homepage images */}
          <div className='hero-section-image'>
             <figure>
-              <img src="images/hero.jpg" className='img-style' alt='hero-section-photo' />
+              <img src="images/hero.jpg" className='img-style' alt='hero section' />
             </figure>
          </div>
      </div>
