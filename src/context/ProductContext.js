@@ -1,21 +1,19 @@
 import { createContext, useContext, useEffect, useReducer } from "react";
 import axios from "axios";
 import reducer from "../reducer/ProductReducer";
-  
 
-const AppContext = createContext(); 
+const AppContext = createContext();
 
 const API = "https://api.pujakaitem.com/api/products";
 
 const initialState = {
-  isLoading: false, 
+  isLoading: false,
   isError: false,
   products: [],
   featureProducts: [],
   isSingleLoading: false,
   singleProduct: {},
 };
-
 
 const AppProvider = ({ children }) => {
   const [state, dispatch] = useReducer(reducer, initialState);
@@ -35,14 +33,14 @@ const AppProvider = ({ children }) => {
   // my 2nd api call for single product
 
   const getSingleProduct = async (url) => {
-    dispatch({ type: "SET_SINGLE_LOADING" })
-    try { 
+    dispatch({ type: "SET_SINGLE_LOADING" });
+    try {
       const res = await axios.get(url);
       const singleProduct = await res.data;
-      dispatch({ type: "SET_SINGLE_PRODUCT", payload: singleProduct })
+      dispatch({ type: "SET_SINGLE_PRODUCT", payload: singleProduct });
       // console.log("singleProduct",singleProduct)
     } catch (error) {
-      dispatch({ type:"SET_SINGLE_ERROR" })
+      dispatch({ type: "SET_SINGLE_ERROR" });
     }
   };
 
@@ -52,7 +50,9 @@ const AppProvider = ({ children }) => {
 
   return (
     <>
-      <AppContext.Provider value={{ ...state, getSingleProduct  }}>{children}</AppContext.Provider>
+      <AppContext.Provider value={{ ...state, getSingleProduct }}>
+        {children}
+      </AppContext.Provider>
     </>
   );
 };

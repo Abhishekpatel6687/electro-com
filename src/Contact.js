@@ -37,6 +37,7 @@ const Contact = () => {
     <Wrapper>
       <h2 className="common-heading">Contact Page</h2>
       <iframe
+        title="map"
         src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3560.979465468172!2d81.01013577425218!3d26.808782464551367!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x399bfb177ba59213%3A0xfd12dad33afbc85d!2sPhoenix%20Palassio!5e0!3m2!1sen!2sin!4v1695056337657!5m2!1sen!2sin"
         width="100%"
         height="400"
