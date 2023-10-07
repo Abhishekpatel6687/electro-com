@@ -31,10 +31,8 @@ const SingleProduct = () => {
   } = singleProduct;
 
   useEffect(() => {
-    if(id){
       getSingleProduct(`${API}?id=${id}`);
-    }
-  },[id,getSingleProduct]);
+  },[getSingleProduct, id]);
 
   if (isSingleLoading) {
     return <div className="page_loading">Loading...........</div>;

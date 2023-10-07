@@ -1,9 +1,10 @@
 const CartReducer = (state, action) => {
   if (action.type === "ADD_TO_CART") {
     let { id, color, amount, product } = action.payload;
-    console.log("dfghj",product)
+    // console.log("dfghj",product)
 
     // tackle the existing products
+
     let existingProduct = state.cart.find((curItem) => {
       return curItem.id === id + color;
     });
@@ -111,6 +112,7 @@ const CartReducer = (state, action) => {
       cart: [],
     };
   }
+
   if (action.type === "CART_TOTAL_ITEM") {
     let updatedItemVal = state.cart.reduce((initialVal, curElem) => {
       let { amount } = curElem;
@@ -122,6 +124,7 @@ const CartReducer = (state, action) => {
       total_Item: updatedItemVal,
     };
   }
+
   if (action.type === "CART_TOTAL_PRICE") {
     let total_price = state.cart.reduce((initialVal, curElem) => {
       let { price, amount } = curElem;

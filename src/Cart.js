@@ -32,6 +32,7 @@ const Cart = () => {
       <div className="cart-item">
         {
           cart.map((curElem) => {
+            console.log(cart)
             return(
               <CartItem key={curElem.id} {...curElem} />
             )
