@@ -47,7 +47,8 @@ const Footer = () => {
                         </div>
 
                         <div>
-                            <a href='#' target='_blank'><FaYoutube className='icons' /></a>
+                            {/* <a href='#' target='_blank'><FaYoutube className='icons' /></a> */}
+                            <FaYoutube className='icons' />
                         </div>
                     </div>
                 </div>
