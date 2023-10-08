@@ -13,6 +13,8 @@ import AddToCart from "./components/AddToCart";
 
 const API = "https://api.pujakaitem.com/api/products";
 
+// ... (previous imports)
+
 const SingleProduct = () => {
   const { getSingleProduct, isSingleLoading, singleProduct } =
     useProductContext();
@@ -31,12 +33,44 @@ const SingleProduct = () => {
   } = singleProduct;
 
   useEffect(() => {
-    getSingleProduct(`${API}?id=${id}`);
-  }, []);
+    // Check if the single product has already been loaded
+    if (!singleProduct || singleProduct.id !== id) {
+      // If not, make the API call
+      getSingleProduct(`${API}?id=${id}`);
+    }
+  }, [getSingleProduct, id, singleProduct]);
 
   if (isSingleLoading) {
     return <div className="page_loading">Loading.....</div>;
   }
+
+  // Rest of your component code...
+
+
+// const SingleProduct = () => {
+//   const { getSingleProduct, isSingleLoading, singleProduct } =
+//     useProductContext();
+
+//   const { id } = useParams();
+
+//   const {
+//     name,
+//     company,
+//     price,
+//     description,
+//     stock,
+//     stars,
+//     reviews,
+//     image,
+//   } = singleProduct;
+
+//   useEffect(() => {
+//     getSingleProduct(`${API}?id=${id}`);
+//   }, [id, getSingleProduct]);
+
+//   if (isSingleLoading) {
+//     return <div className="page_loading">Loading.....</div>;
+//   }
 
   return (
     <Wrapper>
