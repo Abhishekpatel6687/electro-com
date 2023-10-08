@@ -196,7 +196,7 @@ const Wrapper = styled.section`
       opacity: 0;
       transform: translateX(100%);
       /* transform-origin: top; */
-      transition: all 1s linear;
+      transition: all .5s linear;
     }
 
     .active .navbar-lists {
@@ -205,7 +205,7 @@ const Wrapper = styled.section`
       transform: translateX(0);
       z-index: 999;
       transform-origin: right;
-      transition: all 1s linear;
+      transition: all .5s linear;
 
       .navbar-link {
         font-size: 4.2rem;

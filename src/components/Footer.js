@@ -43,7 +43,7 @@ const Footer = () => {
                         </div>
 
                         <div>
-                            <a href='instagram.com/simple_boy_abhishek'><FaInstagram className="icons" /></a>
+                            <a href='instagram.com/simple_boy_abhishek_6687'><FaInstagram className="icons" /></a>
                         </div>
 
                         <div>
