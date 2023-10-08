@@ -6,7 +6,7 @@ import Nav from './Nav';
 const Header = () => {
   return <MainHeader>
     <NavLink to="/">
-    <img src='/images/logo.png' alt='my logo img' />
+    <img src='/images/logo.png.png' className='logo' alt='my logo img' />
     </NavLink>
     <Nav/>
   </MainHeader>
@@ -22,7 +22,7 @@ const MainHeader = styled.header`
   position: relative;
 
   .logo {
-    height: 5rem;
+    height: 35rem;
   }
 `;
 export default Header;

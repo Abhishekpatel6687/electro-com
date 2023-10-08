@@ -23,8 +23,8 @@ const Footer = () => {
         <footer>
             <div className='container grid grid-four-column'>
                 <div className='footer-about'>
-                    <h3>Thapa Technical</h3>
-                    <p>Lorem ipsum doler, sit amet consrctrture adipiscing elit. </p>
+                    <h3>ABHISHEK PATEL</h3>
+                    <p> Great Offers. Top Brands. Best Deals. Low Prices. Huge Selection.</p>
                 </div>
 
                 <div className='footer-subscribe'>

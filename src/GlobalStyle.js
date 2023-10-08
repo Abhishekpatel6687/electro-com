@@ -11,7 +11,7 @@ export const GlobalStyle = createGlobalStyle`
 
 
 html {
-  font-size: 62.5%;
+  font-size: 50%;
   /* scroll-behavior: smooth; */
   /* 1rem = 10px */
   overflow-x: hidden;
@@ -166,7 +166,7 @@ input, textarea{
 
    @media (max-width: ${({ theme }) => theme.media.mobile}) {
        html {
-      font-size: 50%;
+      font-size: 45%;
     }
  
 

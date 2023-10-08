@@ -13,7 +13,7 @@ const HeroSection = ({ myData }) => {
         <div className='hero-section-data'>
             <p className='intro-data'>Welcome to </p> 
             <h1>{name}</h1>
-            <p>I am Abhishek patel I am from in Lucknow, I live in bengaluru, because i live in benguluru to learning coding.</p>
+            <p>Patel Offers an Array Of Unique Products From many Brands. Prime Members Can Enjoy Unlimited Free Shipping, Early Access To Lightning Deals and More. No Cost EMI Available. Great Offers. Top Brands. Best Deals. Low Prices. Huge Selection.</p>
             <NavLink to="/products">
                 <Button>Shop now</Button>
             </NavLink>
@@ -47,10 +47,13 @@ const Wrapper = styled.section`
     h1 {
       text-transform: capitalize;
       font-weight: bold;
+      color:#161554;
     }
 
     .intro-data {
       margin-bottom: 0;
+      color:#2D2CAD;
+      font-size:18px;
     }
   }
 
