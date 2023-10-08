@@ -1,7 +1,7 @@
 import { NavLink } from 'react-router-dom';
 import styled from 'styled-components';
 import {Button} from "../styles/Button"
-import {FaDiscord, FaInstagram, FaYoutube} from "react-icons/fa"
+import {FaGithub, FaInstagram, FaYoutube} from "react-icons/fa"
 const Footer = () => {
   return (
     <Wrapper>
@@ -39,11 +39,11 @@ const Footer = () => {
                     <h3>follow us</h3>
                     <div className='footer-social--icons'>
                         <div>
-                            <FaDiscord className="icons" />
+                            <a href='https://github.com/Abhishekpatel6687'><FaGithub className="icons" /></a>
                         </div>
 
                         <div>
-                            <FaInstagram className="icons" />
+                            <a href='instagram.com/simple_boy_abhishek'><FaInstagram className="icons" /></a>
                         </div>
 
                         <div>
@@ -54,9 +54,12 @@ const Footer = () => {
                 </div>
 
                 <div className='footer-contact'>
-                    <h3>Call Us</h3>
-                    {/* <a href='tel:7071326687'>+91 7071326687</a> */}
+                    <h3>Call Us :</h3>
                     <h3>+91 7071326687</h3>
+                    {/* <a href='tel:7071326687'>+91 7071326687</a> */}
+
+                    <h3>Gmail : </h3>
+                    <h3>abhi7868090@gmail.com</h3>
                 </div>
             </div>
             
