@@ -13,7 +13,7 @@ const HeroSection = ({ myData }) => {
         <div className='hero-section-data'>
             <p className='intro-data'>Welcome to </p> 
             <h1>{name}</h1>
-            <p>Apna Offers an Array Of Unique Products From many Brands. Prime Members Can Enjoy Unlimited Free Shipping, Early Access To Lightning Deals and More. No Cost EMI Available. Great Offers. Top Brands. Best Deals. Low Prices. Huge Selection.</p>
+            <p>Patel Offers an Array Of Unique Products From many Brands. Prime Members Can Enjoy Unlimited Free Shipping, Early Access To Lightning Deals and More. No Cost EMI Available. Great Offers. Top Brands. Best Deals. Low Prices. Huge Selection.</p>
             <NavLink to="/products">
                 <Button>Shop now</Button>
             </NavLink>
