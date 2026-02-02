@@ -13,11 +13,13 @@ const initialState = {
   singleProduct: {},
 };
 
+console.log("initialState",initialState);
 const AppProvider = ({ children }) => {
   const [state, dispatch] = useReducer(reducer, initialState);
  
   const getProducts = async (products) => {
     dispatch({ type: "SET_LOADING" });
+    
     try {
   
       dispatch({ type: "SET_API_DATA", payload: products });
@@ -25,11 +27,10 @@ const AppProvider = ({ children }) => {
       dispatch({ type: "API_ERROR" });
     }
   };
-
+  
   // my 2nd api call for single product
-
-  const getSingleProduct = async () => {
-    console.log("get single product function called",products);
+  const getSingleProduct = async (product) => {
+    console.log("get single product function called",product);
 
     try {
       dispatch({ type: "SET_SINGLE_PRODUCT", payload: products });
