@@ -157,7 +157,7 @@ console.log("products",products);
     if (!singleProduct || singleProduct.id !== id) {
       // If not, make the API call
       // getSingleProduct(`${API}?id=${id}`);
-      const product = products.find(p => p.id == id);
+      const product = products.find(p => p.id === id);
       if (product) {
         getSingleProduct(product);
       }
