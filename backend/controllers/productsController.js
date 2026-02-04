@@ -1,6 +1,6 @@
-import {pool} from "../config/db.js";
+import { pool } from "../config/db.js";
 
-// ADD PRODUCT
+
 export const addProduct = async (req, res) => {
   try {
     const {
@@ -14,15 +14,12 @@ export const addProduct = async (req, res) => {
       featured,
     } = req.body;
 
-    const imageUrl = req.file
-      ? `/uploads/products/${req.file.filename}`
-      : null;
-
-    const result = await pool.query(
-      `INSERT INTO products 
-      (name, company, price, description, stock, stars, reviews, featured, image_url)
-      VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9)
-      RETURNING *`,
+    // 1️⃣ product insert
+    const productResult = await pool.query(
+      `INSERT INTO products
+      (name, company, price, description, stock, stars, reviews, featured)
+      VALUES ($1,$2,$3,$4,$5,$6,$7,$8)
+      RETURNING id`,
       [
         name,
         company,
@@ -32,11 +29,23 @@ export const addProduct = async (req, res) => {
         stars,
         reviews,
         featured,
-        imageUrl,
       ]
     );
 
-    res.status(201).json(result.rows[0]);
+    const productId = productResult.rows[0].id;
+
+    // 2️⃣ image insert
+    if (req.file) {
+      const imageUrl = `/uploads/products/${req.file.filename}`;
+
+      await pool.query(
+        `INSERT INTO product_images (product_id, image_url)
+         VALUES ($1,$2)`,
+        [productId, imageUrl]
+      );
+    }
+
+    res.status(201).json({ message: "Product added successfully" });
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Server error" });
@@ -46,9 +55,25 @@ export const addProduct = async (req, res) => {
 // GET ALL PRODUCTS
 export const getAllProducts = async (req, res) => {
   try {
-    const result = await pool.query("SELECT * FROM products");
+    const result = await pool.query(`
+      SELECT
+        p.*,
+        COALESCE(
+          json_agg(
+            json_build_object('url', pi.image_url)
+          ) FILTER (WHERE pi.image_url IS NOT NULL),
+          '[]'
+        ) AS image
+      FROM products p
+      LEFT JOIN product_images pi
+      ON p.id = pi.product_id
+      GROUP BY p.id
+    `);
+
     res.json(result.rows);
   } catch (error) {
+    console.error(error);
     res.status(500).json({ message: "Server error" });
   }
 };
+

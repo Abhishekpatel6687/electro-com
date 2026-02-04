@@ -1,8 +1,13 @@
 import { createContext, useContext, useEffect, useReducer } from "react";
+import axios from "axios";
 import reducer from "../reducer/ProductReducer";
 import { products } from "../Helpers/ProductData";
 
 const AppContext = createContext();
+
+
+
+const API = "http://localhost:8080/api/products";
 
 const initialState = {
   isLoading: false,
@@ -21,8 +26,8 @@ const AppProvider = ({ children }) => {
     dispatch({ type: "SET_LOADING" });
     
     try {
-  
-      dispatch({ type: "SET_API_DATA", payload: products });
+    const res = await axios.get(API);
+      dispatch({ type: "SET_API_DATA", payload: res.data });
     } catch (error) {
       dispatch({ type: "API_ERROR" });
     }
@@ -33,7 +38,8 @@ const AppProvider = ({ children }) => {
     console.log("get single product function called",product);
 
     try {
-      dispatch({ type: "SET_SINGLE_PRODUCT", payload: products });
+        const res = await axios.get(`${API}/${product.id}`);
+      dispatch({ type: "SET_SINGLE_PRODUCT", payload: res.data });
     } catch (error) {
       dispatch({ type: "SET_SINGLE_ERROR" });
     }
