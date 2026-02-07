@@ -8,6 +8,11 @@ dotenv.config();
 const app = express();
 
 app.use(cors());
+
+app.use(cors({
+  origin: "*", // abhi testing ke liye
+}));
+
 app.use(express.json());
 app.use("/uploads", express.static("uploads"));
 

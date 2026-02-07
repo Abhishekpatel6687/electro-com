@@ -7,7 +7,8 @@ const AppContext = createContext();
 
 
 
-const API = "http://localhost:8080/api/products";
+// const API = "http://localhost:8080/api/products";
+const API = "https://electro-com.onrender.com/products"
 
 const initialState = {
   isLoading: false,
