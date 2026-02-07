@@ -2,32 +2,28 @@ import styled from "styled-components";
 import { useProductContext } from "./context/ProductContext";
 import Product from "./components/Product";
 
-const FeatureProduct= () => {
-
+const FeatureProduct = () => {
   const { isLoading, featureProducts } = useProductContext();
-  console.log(featureProducts,'featureProducts');
+  console.log(featureProducts, "featureProducts");
 
-  if(isLoading){
-    return <div>......Loading</div>
+  if (isLoading) {
+    return <div>......Loading</div>;
   }
-  
+
   return (
     <Wrapper className="section">
-    <div className="container">
-      <div className="intro-data">Check Now</div>
-      <div className="common-heading">Our Feature Services</div>
-      <div className="grid grid-three-column">
-        {
-          featureProducts.map((curElem)=>{
-            return <Product key={curElem.id} {...curElem } />
-          })
-        }
+      <div className="container">
+        <div className="intro-data">Check Now</div>
+        <div className="common-heading">Our Feature Services</div>
+        <div className="grid grid-three-column">
+          {featureProducts.map((curElem) => {
+            return <Product key={curElem.id} {...curElem} />;
+          })}
+        </div>
       </div>
-    </div>
-
     </Wrapper>
-  )
-}
+  );
+};
 
 const Wrapper = styled.section`
   padding: 9rem 0;

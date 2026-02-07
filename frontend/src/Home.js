@@ -10,10 +10,12 @@ const Home = () => {
 
   return (
     <>
+    
       <HeroSection myData={data} />
       <FeatureProduct/>
       <Services />
       <Trusted />
+
     </>
   );
 };
