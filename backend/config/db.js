@@ -1,7 +1,7 @@
 import pkg from "pg";
 import dotenv from "dotenv";
 
-dotenv.config(); 
+dotenv.config();
 
 const { Pool } = pkg;
 
@@ -11,11 +11,18 @@ export const pool = new Pool({
   database: process.env.DB_NAME,
   host: process.env.DB_HOST,
   port: process.env.DB_PORT,
-  ssl: process.env.DB_HOST !== "localhost"
-    ? { rejectUnauthorized: false }
-    : false
+  connectionString: process.env.DATABASE_URL,
+  ssl:
+    process.env.NODE_ENV === "production"
+      ? { rejectUnauthorized: false }
+      : false,
+  // });
+  //   ssl: process.env.DB_HOST !== "localhost"
+  //     ? { rejectUnauthorized: false }
+  //     : false
 });
 
-pool.connect()
+pool
+  .connect()
   .then(() => console.log("PostgreSQL connected ✅"))
-  .catch(err => console.error("PostgreSQL connection error ❌", err));
+  .catch((err) => console.error("PostgreSQL connection error ❌", err));
