@@ -9,6 +9,7 @@ dotenv.config();
 const app = express();
 
 const PORT = process.env.PORT || 8080;
+console.log("DB URL:", process.env.DATABASE_URL);
 
 app.use(cors());
 
@@ -17,7 +18,7 @@ app.use(cors({
 }));
 
 app.get("/check-products", async (req, res) => {
-  const r = await pool.query("SELECT * FROM productfilter");
+  const r = await pool.query('SELECT * FROM "productfilter"');
   res.json(r.rows);
 });
 
