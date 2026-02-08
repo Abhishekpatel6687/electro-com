@@ -1,12 +1,24 @@
 import { pool } from "./config/db.js";
 import express from "express";
+import productRoutes from "./routes/productRoutes.js";
 import cors from "cors";
+import path from "path";
+import { fileURLToPath } from "url";
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 const app = express();
 const PORT = process.env.PORT || 8080;
 
 app.use(cors());
 app.use(express.json());
+
+// Serve uploads folder correctly
+app.use("/uploads", express.static(path.join(__dirname, "uploads")));
+
+// Routes
+app.use("/api/products", productRoutes);
 
 app.get("/check-products", async (req, res) => {
   try {

@@ -4,15 +4,18 @@ import FormatPrice from "../Helpers/FormatPrice";
 
 const Product = (curElem) => {
   const { id, name, image, price, category } = curElem;
-  console.log("product component",curElem);
+  console.log("product component",image[0].url);
   return (
     <div>
       <NavLink to={`/singleproduct/${id}`}>
         <div className="card">
           <figure>
-            <img
-             src={`http://localhost:8080${image[0].url}`}
-             alt={name} />
+            {image && image.length > 0 && (
+              <img
+                  src={`http://localhost:8080${image[0].url}`} // 👈 correct
+                alt={name}
+              />
+            )}
             <figcaption className="caption">{category}</figcaption>
           </figure>
 
