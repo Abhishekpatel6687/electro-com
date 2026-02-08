@@ -3,54 +3,41 @@ import { pool } from "../config/db.js";
 
 export const addProduct = async (req, res) => {
   try {
-    const {
-      name,
-      company,
-      price,
-      description,
-      stock,
-      stars,
-      reviews,
-      featured,
-    } = req.body;
+    const { name, price, category } = req.body;
 
-    // 1️⃣ product insert
+    if (!req.file) {
+      return res.status(400).json({ message: "Image required" });
+    }
+
+    // 1️⃣ Product insert
     const productResult = await pool.query(
-      `INSERT INTO products
-      (name, company, price, description, stock, stars, reviews, featured)
-      VALUES ($1,$2,$3,$4,$5,$6,$7,$8)
-      RETURNING id`,
-      [
-        name,
-        company,
-        price,
-        description,
-        stock,
-        stars,
-        reviews,
-        featured,
-      ]
+      `INSERT INTO products (name, price, category)
+       VALUES ($1, $2, $3)
+       RETURNING id`,
+      [name, price, category]
     );
 
     const productId = productResult.rows[0].id;
 
-    // 2️⃣ image insert
-    if (req.file) {
-      const imageUrl = `/uploads/products/${req.file.filename}`;
+    // 2️⃣ Image insert
+    const imagePath = `/uploads/products/${req.file.filename}`;
 
-      await pool.query(
-        `INSERT INTO product_images (product_id, image_url)
-         VALUES ($1,$2)`,
-        [productId, imageUrl]
-      );
-    }
+    await pool.query(
+      `INSERT INTO product_images (product_id, image_url)
+       VALUES ($1, $2)`,
+      [productId, imagePath]
+    );
 
-    res.status(201).json({ message: "Product added successfully" });
+    res.status(201).json({
+      message: "Product + image added successfully",
+    });
+
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Server error" });
   }
 };
+
 
 // GET ALL PRODUCTS
 // export const getAllProducts = async (req, res) => {
