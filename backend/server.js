@@ -18,9 +18,15 @@ app.use(cors({
 }));
 
 app.get("/check-products", async (req, res) => {
-  const r = await pool.query('SELECT * FROM "productfilter"');
-  res.json(r.rows);
+  try {
+    const r = await pool.query('SELECT * FROM "productfilter"');
+    res.json(r.rows);
+  } catch (err) {
+    console.error("FULL DB ERROR:", err);  // <--- full error print karo
+    res.status(500).json({ error: err.message });
+  }
 });
+
 app.get("/check-db", async (req, res) => {
   const r = await pool.query("SELECT current_database()");
   res.json(r.rows);
