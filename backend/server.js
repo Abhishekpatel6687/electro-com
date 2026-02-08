@@ -21,7 +21,10 @@ app.get("/check-products", async (req, res) => {
   const r = await pool.query('SELECT * FROM "productfilter"');
   res.json(r.rows);
 });
-
+app.get("/check-db", async (req, res) => {
+  const r = await pool.query("SELECT current_database()");
+  res.json(r.rows);
+});
 app.get("/test-db", async (req, res) => {
   try {
     const result = await pool.query("SELECT NOW()");
