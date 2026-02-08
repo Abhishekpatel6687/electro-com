@@ -16,7 +16,7 @@ app.use(cors({
   origin: "*", // abhi testing ke liye
 }));
 app.get("/check-products", async (req, res) => {
-  const r = await pool.query("SELECT COUNT(*) FROM products");
+  const r = await pool.query("SELECT * FROM products");
   res.json(r.rows);
 });
 
