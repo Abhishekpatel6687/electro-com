@@ -1,10 +1,11 @@
 import pg from "pg";
 import dotenv from "dotenv";
+
 dotenv.config();
 
 export const pool = new pg.Pool({
-  connectionString: process.env.DATABASE_URL,
+  connectionString: process.env.DATABASE_URL, // Only this
   ssl: {
-    rejectUnauthorized: false, // Render pe PostgreSQL ke liye required
+    rejectUnauthorized: false, // Required for Render external PostgreSQL
   },
 });

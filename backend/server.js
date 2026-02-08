@@ -1,62 +1,33 @@
 import { pool } from "./config/db.js";
 import express from "express";
-import dotenv from "dotenv";
 import cors from "cors";
-import productRoutes from "./routes/productRoutes.js";
-
-dotenv.config();
 
 const app = express();
-
 const PORT = process.env.PORT || 8080;
-console.log("DB URL:", process.env.DATABASE_URL);
 
 app.use(cors());
-
-app.use(cors({
-  origin: "*", // abhi testing ke liye
-}));
+app.use(express.json());
 
 app.get("/check-products", async (req, res) => {
   try {
-    const r = await pool.query('SELECT * FROM "productfilter"');
+    const r = await pool.query('SELECT * FROM "productfilter"'); // Case-sensitive
     res.json(r.rows);
   } catch (err) {
-    console.error("FULL DB ERROR:", err);  // <--- full error print karo
+    console.error("FULL DB ERROR:", err);
     res.status(500).json({ error: err.message });
   }
 });
 
 app.get("/check-db", async (req, res) => {
-  const r = await pool.query("SELECT current_database()");
-  res.json(r.rows);
-});
-app.get("/test-db", async (req, res) => {
   try {
-    const result = await pool.query("SELECT NOW()");
-    res.json({
-      success: true,
-      time: result.rows[0],
-    });
+    const r = await pool.query("SELECT current_database()");
+    res.json(r.rows);
   } catch (err) {
-    console.error("DB ERROR:", err);
-    res.status(500).json({
-      success: false,
-      error: err.message,
-    });
+    console.error(err);
+    res.status(500).json({ error: err.message });
   }
 });
 
-app.use(express.json());
-app.use("/uploads", express.static("uploads"));
+app.get("/", (req, res) => res.send("API is running 🚀"));
 
-app.use("/api/products", productRoutes);
-
-
-app.get("/", (req, res) => {
-  res.send("API is running 🚀");
-});
-
-app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
-});
+app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
