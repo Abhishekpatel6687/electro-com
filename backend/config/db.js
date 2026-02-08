@@ -1,57 +1,34 @@
-// import pkg from "pg";
-// import dotenv from "dotenv";
-
-// dotenv.config();
-
-// const { Pool } = pkg;
-
-// export const pool = new Pool({
-//   // user: process.env.DB_USER,
-//   // password: process.env.DB_PASSWORD,
-//   // database: process.env.DB_NAME,
-//   // host: process.env.DB_HOST,
-//   // port: process.env.DB_PORT,
-//   connectionString: process.env.DATABASE_URL,
-//   ssl:
-//     process.env.NODE_ENV === "production"
-//       ? { rejectUnauthorized: false }
-//       : false,
-//   // });
-//   //   ssl: process.env.DB_HOST !== "localhost"
-//   //     ? { rejectUnauthorized: false }
-//   //     : false
-// });
-
-// pool
-//   .connect()
-//   .then(() => console.log("PostgreSQL connected ✅"))
-//   .catch((err) => console.error("PostgreSQL connection error ❌", err));
-
-import pkg from "pg";
+import express from "express";
+import pg from "pg";
 import dotenv from "dotenv";
 
 dotenv.config();
 
-const { Pool } = pkg;
+const app = express();
+const PORT = process.env.PORT || 10000;
 
-const isProduction = process.env.NODE_ENV === "production";
-export const pool = new Pool(
-  isProduction
-    ? {
-        connectionString: process.env.DATABASE_URL,
-        ssl: { rejectUnauthorized: false },
-      }
-    : {
-        user: process.env.DB_USER,
-        password: process.env.DB_PASSWORD,
-        database: process.env.DB_NAME,
-        host: process.env.DB_HOST,
-        port: process.env.DB_PORT,
-      }
-);
-pool
-  .connect()
+const pool = new pg.Pool({
+  connectionString: process.env.DATABASE_URL,
+  ssl: {
+    rejectUnauthorized: false, // Render pe PostgreSQL ke liye required
+  },
+});
+
+pool.connect()
   .then(() => console.log("PostgreSQL connected ✅"))
-  .catch((err) =>
-    console.error("PostgreSQL connection error ❌", err)
-  );
+  .catch(err => console.error("PostgreSQL connection error ❌", err));
+
+// Sample route to test table
+app.get("/products", async (req, res) => {
+  try {
+    const result = await pool.query("SELECT * FROM productfilter");
+    res.json(result.rows);
+  } catch (err) {
+    console.error(err);
+    res.status(500).send("Database error");
+  }
+});
+
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
+});
