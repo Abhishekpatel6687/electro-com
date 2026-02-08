@@ -17,7 +17,7 @@ app.use(cors({
 }));
 
 app.get("/check-products", async (req, res) => {
-  const r = await pool.query("SELECT * FROM public.productFilter");
+  const r = await pool.query("SELECT * FROM productfilter");
   res.json(r.rows);
 });
 
