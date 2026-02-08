@@ -53,6 +53,30 @@ export const addProduct = async (req, res) => {
 };
 
 // GET ALL PRODUCTS
+// export const getAllProducts = async (req, res) => {
+//   try {
+//     const result = await pool.query(`
+//       SELECT
+//         p.*,
+//         COALESCE(
+//           json_agg(
+//             json_build_object('url', pi.image_url)
+//           ) FILTER (WHERE pi.image_url IS NOT NULL),
+//           '[]'
+//         ) AS image
+//       FROM products p
+//       LEFT JOIN product_images pi
+//       ON p.id = pi.product_id
+//       GROUP BY p.id
+//     `);
+
+//     res.json(result.rows);
+//   } catch (error) {
+//     console.error(error);
+//     res.status(500).json({ message: "Server error" });
+//   }
+// };
+
 export const getAllProducts = async (req, res) => {
   try {
     const result = await pool.query(`
@@ -61,7 +85,7 @@ export const getAllProducts = async (req, res) => {
         COALESCE(
           json_agg(
             json_build_object('url', pi.image_url)
-          ) FILTER (WHERE pi.image_url IS NOT NULL),
+          ),
           '[]'
         ) AS image
       FROM products p
@@ -72,8 +96,10 @@ export const getAllProducts = async (req, res) => {
 
     res.json(result.rows);
   } catch (error) {
-    console.error(error);
-    res.status(500).json({ message: "Server error" });
+    console.error("PRODUCT FETCH ERROR:", error);
+    res.status(500).json({
+      message: "Server error",
+      error: error.message,
+    });
   }
 };
-
