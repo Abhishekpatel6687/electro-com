@@ -41,6 +41,13 @@ app.get("/check-db", async (req, res) => {
   }
 });
 
-app.get("/", (req, res) => res.send("API is running 🚀"));
+
+// set cookie 
+
+app.get("/", (req, res) => {
+  res.cookie("name", "abhishek");
+  res.send("done")
+});
+
 
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
