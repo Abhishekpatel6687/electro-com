@@ -16,14 +16,14 @@ const app = express();
 const PORT = process.env.PORT || 8080;
 
 // frontend me cookie use krna hai to backend me cors me credentials true krna hoga aur origin me frontend ka url dena hoga.
-// app.use(
-//   cors({
-//     origin: "http://localhost:3000", // frontend ka URL
-//     credentials: true,               // ⭐ MUST
-//   })
-// );
+app.use(
+  cors({
+    origin: "http://localhost:3000", // frontend ka URL
+    credentials: true,               // ⭐ MUST
+  })
+);
 
-app.use(cors()); // CORS ko globally enable kar diya, specific origin ke bina
+// app.use(cors()); // CORS ko globally enable kar diya, specific origin ke bina
 app.use(express.json());
 app.use(cookieParser());
 // Serve uploads folder correctly

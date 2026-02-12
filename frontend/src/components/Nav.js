@@ -14,6 +14,33 @@ const Nav = () => {
     <Wrapper>
       <div className={menuIcon ? "navbar active" : "navbar"}>
         <ul className="navbar-lists">
+             <li>
+            <NavLink
+              to="/loginP"
+              className="navbar-link"
+              onClick={() => setMenuIcon(false)}
+            >
+              LoginP
+            </NavLink>
+          </li>
+             <li>
+            <NavLink
+              to="/register"
+              className="navbar-link"
+              onClick={() => setMenuIcon(false)}
+            >
+              register
+            </NavLink>
+          </li>
+             <li>
+            <NavLink
+              to="/dashboard"
+              className="navbar-link"
+              onClick={() => setMenuIcon(false)}
+            >
+              dashboard
+            </NavLink>
+          </li>
           <li>
             <NavLink
               to="/"
