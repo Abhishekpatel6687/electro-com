@@ -5,6 +5,8 @@ import productRoutes from "./routes/productRoutes.js";
 import cors from "cors";
 import path from "path";
 import { fileURLToPath } from "url";
+import { initDB } from "./database/initDB.js";
+import authRoutes from "./routes/authRoutes.js";
 
 
 const __filename = fileURLToPath(import.meta.url);
@@ -27,8 +29,10 @@ app.use(cookieParser());
 // Serve uploads folder correctly
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
+initDB();
 
 // Routes
+app.use("/api/auth", authRoutes);
 app.use("/api/products", productRoutes);
 
 app.get("/check-products", async (req, res) => {
