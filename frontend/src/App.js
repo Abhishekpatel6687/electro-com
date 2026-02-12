@@ -7,11 +7,15 @@ import Contact from "./Contact";
 import Cart from "./Cart";
 import SingleProduct from "./SingleProduct";
 import ErrorPage from "./ErrorPage";
-import { GlobalStyle } from "./GlobalStyle"; 
+import { GlobalStyle } from "./GlobalStyle";
 import { ThemeProvider } from "styled-components";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
 import Login from "./Login";
+import LoginP from "./pages/Login";
+import Register from "./pages/Register";
+import Dashboard from "./pages/Dashboard";
+import ProtectedRoute from "./components/ProtectedRoute";
 
 const App = () => {
   const theme = {
@@ -39,25 +43,38 @@ const App = () => {
     },
   };
 
-  return(
+  return (
     <ThemeProvider theme={theme}>
-    <Router>
-    <GlobalStyle />
-    <Header/>
-      <Routes>
-        <Route path="/" element={<Home/>} />
-        <Route path="/about" element={<About/>} />
-        <Route path="/products" element={<Products/>} />
-        <Route path="/contact" element={<Contact/>} />
-        <Route path="/singleproduct/:id" element={<SingleProduct/>} />
-        <Route path="/cart" element={<Cart/>} />
-        <Route path="/login" element={<Login/>} />
-        <Route path="*" element={<ErrorPage/>} />
-      </Routes>
-      <Footer/>
-    </Router>
+      <Router>
+        <GlobalStyle />
+        <Header />
+        <Routes>
+
+          <Route path="/register" element={<Register />} />
+          <Route path="/loginP" element={<LoginP />} />
+
+          <Route
+            path="/dashboard"
+            element={
+              <ProtectedRoute>
+                <Dashboard />
+              </ProtectedRoute>
+            }
+          />
+
+          <Route path="/" element={<Home />} />
+          <Route path="/about" element={<About />} />
+          <Route path="/products" element={<Products />} />
+          <Route path="/contact" element={<Contact />} />
+          <Route path="/singleproduct/:id" element={<SingleProduct />} />
+          <Route path="/cart" element={<Cart />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="*" element={<ErrorPage />} />
+        </Routes>
+        <Footer />
+      </Router>
     </ThemeProvider>
-  )
+  );
 };
 
 export default App;
