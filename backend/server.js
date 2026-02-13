@@ -3,11 +3,10 @@ import express from "express";
 import cookieParser from "cookie-parser";
 import productRoutes from "./routes/productRoutes.js";
 import cors from "cors";
+import { initializeTables } from "./database/initializeTables.js";
 import path from "path";
 import { fileURLToPath } from "url";
-import { initDB } from "./database/initDB.js";
 import authRoutes from "./routes/authRoutes.js";
-
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -16,11 +15,12 @@ const app = express();
 const PORT = process.env.PORT || 8080;
 
 // frontend me cookie use krna hai to backend me cors me credentials true krna hoga aur origin me frontend ka url dena hoga.
+
 app.use(
   cors({
     origin: "http://localhost:3000", // frontend ka URL
-    credentials: true,               // ⭐ MUST
-  })
+    credentials: true, // ⭐ MUST
+  }),
 );
 
 // app.use(cors()); // CORS ko globally enable kar diya, specific origin ke bina
@@ -29,7 +29,7 @@ app.use(cookieParser());
 // Serve uploads folder correctly
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
-initDB();
+initializeTables();
 
 // Routes
 app.use("/api/auth", authRoutes);
@@ -51,17 +51,15 @@ app.get("/check-db", async (req, res) => {
     res.json(r.rows);
   } catch (err) {
     console.error(err);
-    res.status(500).json({ error: err.message, });
-
+    res.status(500).json({ error: err.message });
   }
 });
 
-
-// set cookie 
+// set cookie
 
 app.get("/", (req, res) => {
   res.cookie("name", "abhishek");
-  res.send("done")
+  res.send("done");
 });
 
 app.get("/get-cookie", (req, res) => {
@@ -74,6 +72,5 @@ app.get("/ab", (req, res) => {
   console.log("req.cookies", req.cookies); // ⭐ debug
   res.json(req.cookies);
 });
-
 
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
