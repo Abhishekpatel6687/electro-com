@@ -1,25 +1,3 @@
-// import React from "react";
-// import ReactDOM from "react-dom/client";
-// import reportWebVitals from "./reportWebVitals";
-// import App from './app/App'
-// import { AppProvider } from "./context/ProductContext";
-// import { GlobalStyle } from "./styles/GlobalStyle";
-// import { FilterContextProvider } from "./context/Filter_Context";
-// import { CartProvider } from "./context/Cart_Context";
-
-// const root = ReactDOM.createRoot(document.getElementById("root"));
-// root.render(
-//     <AppProvider>
-//         <GlobalStyle />
-//       <FilterContextProvider>
-//         <CartProvider>
-//           <App />
-//         </CartProvider>
-//       </FilterContextProvider>
-//     </AppProvider>
-// );
-
-// reportWebVitals();
 import React from "react";
 import ReactDOM from "react-dom/client";
 import reportWebVitals from "./reportWebVitals";
