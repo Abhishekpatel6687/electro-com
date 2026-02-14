@@ -1,11 +1,11 @@
 import { useEffect } from "react";
 import styled from "styled-components";
 import { useParams } from "react-router-dom";
-import { useProductContext } from "./context/ProductContext";
+import { useProductContext } from "../../context/ProductContext";
 import PageNavigation from "./components/PageNavigation";
-import MyImage from "./components/MyImage";
-import { Container } from "./styles/Container";
-import FormatPrice from "./Helpers/FormatPrice";
+import MyImage from "../../components/common/MyImage";
+import { Container } from "../../styles/Container";
+import FormatPrice from "../../Helpers/FormatPrice";
 import { MdSecurity } from "react-icons/md";
 import { TbTruckDelivery, TbReplace } from "react-icons/tb";
 import Star from "./components/Star";

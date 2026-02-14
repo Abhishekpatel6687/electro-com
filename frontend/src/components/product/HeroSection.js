@@ -1,35 +1,42 @@
-
-import { NavLink } from 'react-router-dom';
-import styled from 'styled-components';
-import {Button} from "../styles/Button"
+import { NavLink } from "react-router-dom";
+import styled from "styled-components";
+import { Button } from "../../styles/Button";
 
 const HeroSection = ({ myData }) => {
-     const { name }= myData; 
+  const { name } = myData;
 
   return (
     <Wrapper>
-    <div className='container'>
-     <div className='grid grid-two-column'>
-        <div className='hero-section-data'>
-            <p className='intro-data'>Welcome to </p> 
+      <div className="container">
+        <div className="grid grid-two-column">
+          <div className="hero-section-data">
+            <p className="intro-data">Welcome to </p>
             <h1>{name}</h1>
-            <p>Patel Offers an Array Of Unique Products From many Brands. Prime Members Can Enjoy Unlimited Free Shipping, Early Access To Lightning Deals and More. No Cost EMI Available. Great Offers. Top Brands. Best Deals. Low Prices. Huge Selection.</p>
+            <p>
+              Patel Offers an Array Of Unique Products From many Brands. Prime
+              Members Can Enjoy Unlimited Free Shipping, Early Access To
+              Lightning Deals and More. No Cost EMI Available. Great Offers. Top
+              Brands. Best Deals. Low Prices. Huge Selection.
+            </p>
             <NavLink to="/products">
-                <Button>Shop now</Button>
+              <Button>Shop now</Button>
             </NavLink>
-        </div>
-         {/* our homepage images */}
-         <div className='hero-section-image'>
+          </div>
+          {/* our homepage images */}
+          <div className="hero-section-image">
             <figure>
-              <img src="images/hero.jpg" className='img-style' alt='hero section' />
+              <img
+                src="images/hero.jpg"
+                className="img-style"
+                alt="hero section"
+              />
             </figure>
-         </div>
-     </div>
-    </div>
+          </div>
+        </div>
+      </div>
     </Wrapper>
   );
 };
-
 
 const Wrapper = styled.section`
   padding: 12rem 0;
@@ -47,13 +54,13 @@ const Wrapper = styled.section`
     h1 {
       text-transform: capitalize;
       font-weight: bold;
-      color:#161554;
+      color: #161554;
     }
 
     .intro-data {
       margin-bottom: 0;
-      color:#2D2CAD;
-      font-size:18px;
+      color: #2d2cad;
+      font-size: 18px;
     }
   }
 
@@ -100,9 +107,3 @@ const Wrapper = styled.section`
   }
 `;
 export default HeroSection;
-
-
-
-
-
-

@@ -1,8 +1,8 @@
 import styled from "styled-components";
-import { useFilterContext } from "../context/Filter_Context";
+import { useFilterContext } from "../../context/Filter_Context";
 import { FaCheck } from "react-icons/fa";
-import FormatPrice from "../Helpers/FormatPrice";
-import {Button}  from "../styles/Button";
+import FormatPrice from "../../Helpers/FormatPrice";
+import {Button}  from "../../styles/Button";
 
 const FilterSection = () => {
   const {

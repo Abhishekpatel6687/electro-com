@@ -1,6 +1,6 @@
 import { NavLink } from 'react-router-dom';
 import styled from 'styled-components';
-import {Button} from "../styles/Button"
+import {Button} from "../../styles/Button"
 import {FaGithub, FaInstagram, FaYoutube} from "react-icons/fa"
 const Footer = () => {
   return (
