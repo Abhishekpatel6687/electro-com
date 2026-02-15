@@ -1,25 +1,19 @@
-// import { Navigate } from "react-router-dom";
-
-// function ProtectedRoute({ children }) {
-//   const token = document.cookie.includes("token");
-
-//   if (!token) {
-//     return <Navigate to="/login" />;
-//   }
-
-//   return children;
-// }
-
-// export default ProtectedRoute;
+import axios from "axios";
+import { useEffect, useState } from "react";
 import { Navigate } from "react-router-dom";
 
+
 export default function ProtectedRoute({ children }) {
-  const isAuth = localStorage.getItem("token");
+  const [isAuth, setIsAuth] = useState(null);
 
-  if (!isAuth) {
-    // return <Navigate to="/dashboard" />;
-      return <Navigate to="/login" replace />;
-  }
+  useEffect(() => {
+    axios
+      .get("/auth/me")
+      .then(() => setIsAuth(true))
+      .catch(() => setIsAuth(false));
+  }, []);
 
-  return children;
+  if (isAuth === null) return <p>Loading...</p>;
+
+  return isAuth ? children : <Navigate to="/dashboard" replace />;
 }
