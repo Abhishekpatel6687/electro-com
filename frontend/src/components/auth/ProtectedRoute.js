@@ -17,7 +17,8 @@ export default function ProtectedRoute({ children }) {
   const isAuth = localStorage.getItem("token");
 
   if (!isAuth) {
-    return <Navigate to="/login" />;
+    // return <Navigate to="/dashboard" />;
+      return <Navigate to="/login" replace />;
   }
 
   return children;
