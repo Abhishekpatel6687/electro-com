@@ -1,5 +1,5 @@
 import React from 'react';
-import HeroSection from './components/HeroSection';
+import HeroSection from '../../components/product/HeroSection';
 import { useProductContext } from '../../context/ProductContext';
 
 

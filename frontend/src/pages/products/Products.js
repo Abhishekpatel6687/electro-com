@@ -1,7 +1,7 @@
 import styled from "styled-components";
-import FilterSection from "./components/FilterSection";
-import ProductList from "./components/ProductList";
-import Sort from "./components/Sort";
+import FilterSection from "../../components/product/FilterSection";
+import ProductList from "../../components/product/ProductList";
+import Sort from "../../components/product/Sort";
 // import { useFilterContext } from "./context/Filter_Context";
 
 const Products = () => {

@@ -1,11 +1,17 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { ThemeProvider } from "styled-components";
 import Home from "../pages/home/Home";
+import About from "../pages/about/About";
+import Products from "../pages/products/Products";
+import Contact from "../pages/contact/Contact";
 import Login from "../pages/login/Login";
 import Register from "../pages/register/Register";
 import Dashboard from "../pages/dashboard/Dashboard";
 import ErrorPage from "../pages/error/ErrorPage";
 import ProtectedRoute from "../components/auth/ProtectedRoute";
+// import Header from "../components/layout/Header";
+import Footer from "../components/layout/Footer";
+import MainLayout from "../components/layout/MainLayout";
 
 export default function AppRoutes() {
   const theme = {
@@ -36,10 +42,19 @@ export default function AppRoutes() {
   return (
     <ThemeProvider theme={theme}>
       <BrowserRouter>
+       {/* <Header /> // aise bbhi direct sb pe header laga sakte ho  */}
         <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/register" element={<Register />} />
+                 <Route element={<MainLayout />}> // aise header sab se lagana sahi rahega
+            <Route path="/" element={<Home />} />
+            <Route path="/about" element={<About />} />
+            <Route path="/products" element={<Products />} />
+            <Route path="/contact" element={<Contact />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/register" element={<Register />} />
+          </Route>
+
+          {/* <Route path="/singleproduct/:id" element={<SingleProduct/>} />
+        <Route path="/cart" element={<Cart/>} /> */}
 
           <Route
             path="/dashboard"
@@ -61,6 +76,7 @@ export default function AppRoutes() {
 
           <Route path="*" element={<ErrorPage />} />
         </Routes>
+        <Footer/>
       </BrowserRouter>
     </ThemeProvider>
   );
