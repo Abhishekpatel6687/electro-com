@@ -40,14 +40,25 @@ export default function AppRoutes() {
           <Route path="/" element={<Home />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
+
           <Route
             path="/dashboard"
             element={
-              <ProtectedRoute>
+              <ProtectedRoute role="user">
                 <Dashboard />
               </ProtectedRoute>
             }
           />
+
+          <Route
+            path="/prodashboard"
+            element={
+              <ProtectedRoute role="superadmin">
+                <Home />
+              </ProtectedRoute>
+            }
+          />
+
           <Route path="*" element={<ErrorPage />} />
         </Routes>
       </BrowserRouter>

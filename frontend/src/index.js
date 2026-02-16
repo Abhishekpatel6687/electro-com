@@ -10,19 +10,22 @@ import { theme } from "./styles/theme";
 import { AppProvider } from "./context/ProductContext";
 import { FilterContextProvider } from "./context/Filter_Context";
 import { CartProvider } from "./context/Cart_Context";
+import { AuthProvider } from "./context/AuthContext";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 
 root.render(
   <ThemeProvider theme={theme}>
     <GlobalStyle />
-    <AppProvider>
-      <FilterContextProvider>
-        <CartProvider>
-          <App />
-        </CartProvider>
-      </FilterContextProvider>
-    </AppProvider>
+    <AuthProvider>
+      <AppProvider>
+        <FilterContextProvider>
+          <CartProvider>
+            <App />
+          </CartProvider>
+        </FilterContextProvider>
+      </AppProvider>
+    </AuthProvider>
   </ThemeProvider>
 );
 
