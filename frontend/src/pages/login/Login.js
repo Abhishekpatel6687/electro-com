@@ -134,7 +134,7 @@ function AuthPage() {
 export default AuthPage;
 const Wrapper = styled.div`
   height: 100vh;
-  background: linear-gradient(120deg, #4e73df, #224abe);
+  // background: linear-gradient(120deg, #4e73df, #224abe);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -254,6 +254,7 @@ const Wrapper = styled.div`
   }
 
   .overlay-left {
+  margin-left:100px;
     transform: translateX(-20%);
   }
 
