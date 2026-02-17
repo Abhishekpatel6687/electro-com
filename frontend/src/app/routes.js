@@ -5,7 +5,6 @@ import About from "../pages/about/About";
 import Products from "../pages/products/Products";
 import Contact from "../pages/contact/Contact";
 import Login from "../pages/login/Login";
-import Register from "../pages/register/Register";
 import Dashboard from "../pages/dashboard/Dashboard";
 import ErrorPage from "../pages/error/ErrorPage";
 import ProtectedRoute from "../components/auth/ProtectedRoute";
@@ -50,7 +49,6 @@ export default function AppRoutes() {
             <Route path="/products" element={<Products />} />
             <Route path="/contact" element={<Contact />} />
             <Route path="/login" element={<Login />} />
-            <Route path="/register" element={<Register />} />
           </Route>
 
           {/* <Route path="/singleproduct/:id" element={<SingleProduct/>} />
