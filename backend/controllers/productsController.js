@@ -3,37 +3,56 @@ import { pool } from "../config/db.js";
 
 export const addProduct = async (req, res) => {
   try {
-    console.log("BODY:", req.body);
-    console.log("FILE:", req.file);
+    const {
+      name,
+      company,
+      price,
+      description,
+      stock,
+      stars,
+      reviews,
+      featured,
+      category,
+    } = req.body;
 
-    const { name, price, category } = req.body;
+    // 1️⃣ Product insert karo
+    const productResult = await pool.query(
+      `INSERT INTO products 
+      (name, company, price, description, stock, stars, reviews, featured, category)
+      VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9)
+      RETURNING *`,
+      [
+        name,
+        company,
+        price,
+        description,
+        stock || 0,
+        stars || 0,
+        reviews || 0,
+        featured || false,
+        category,
+      ]
+    );
 
-    if (!req.file) {
-      return res.status(400).json({ message: "Image required" });
+    const product = productResult.rows[0];
+
+    // 2️⃣ Image insert karo agar file aayi ho
+    if (req.file) {
+      const imageUrl = `/uploads/products/${req.file.filename}`;
+
+      await pool.query(
+        `INSERT INTO product_images (product_id, image_url)
+         VALUES ($1, $2)`,
+        [product.id, imageUrl]
+      );
     }
 
-    // product insert
-    const productResult = await pool.query(
-      `INSERT INTO products (name, price, category)
-       VALUES ($1, $2, $3)
-       RETURNING id`,
-      [name, price, category]
-    );
-
-    const productId = productResult.rows[0].id;
-
-    const imagePath = `/uploads/products/${req.file.filename}`;
-
-    // image insert (FIXED)
-    await pool.query(
-      `INSERT INTO product_images (product_id, image_url)
-       VALUES ($1, $2)`,
-      [productId, imagePath]
-    );
-
-    res.status(201).json({ message: "Product added successfully" });
+    res.status(201).json({
+      message: "Product added successfully ✅",
+      product,
+    });
   } catch (error) {
-    console.error("ADD PRODUCT ERROR 👉", error);
+    console.error(error);
     res.status(500).json({
       message: "Server error",
       error: error.message,
@@ -51,13 +70,14 @@ export const getAllProducts = async (req, res) => {
         COALESCE(
           json_agg(
             json_build_object('url', pi.image_url)
-          ),
+          ) FILTER (WHERE pi.image_url IS NOT NULL),
           '[]'
-        ) AS image
+        ) AS images
       FROM products p
       LEFT JOIN product_images pi
       ON p.id = pi.product_id
       GROUP BY p.id
+      ORDER BY p.id DESC
     `);
 
     res.json(result.rows);
@@ -69,3 +89,4 @@ export const getAllProducts = async (req, res) => {
     });
   }
 };
+

@@ -1,14 +1,15 @@
+import { createProductImagesTable } from "./tables/imageTable.js";
+import { createProductsTable } from "./tables/productTable.js";
 import { createUserTable } from "./tables/userTable.js";
-// import { createProductTable } from "./tables/productTable.js";
 
 export const initializeTables = async () => {
   try {
     await createUserTable();
-    // await createProductTable();
+    await createProductsTable();
+    await createProductImagesTable();
 
     console.log("All tables initialized 🚀");
-
   } catch (error) {
-    console.error("Error initializing tables ❌", error);
+    console.error("Table initialization error:", error);
   }
 };

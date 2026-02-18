@@ -43,6 +43,15 @@ const Nav = () => {
               Products
             </NavLink>
           </li>
+              <li>
+            <NavLink
+              to="/productAdd"
+              className="navbar-link"
+              onClick={() => setMenuIcon(false)}
+            >
+              Add Products
+            </NavLink>
+          </li>
           <li>
             <NavLink
               to="/contact"

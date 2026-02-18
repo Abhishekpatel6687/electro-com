@@ -3,16 +3,16 @@ import { NavLink } from "react-router-dom";
 import FormatPrice from "../../Helpers/FormatPrice";
 
 const Product = (curElem) => {
-  const { id, name, image, price, category } = curElem;
-  console.log("product component",image[0].url);
+  const { id, name, images, price, category } = curElem;
+  console.log("product component",images[0]?.url,curElem);
   return (
     <div>
       <NavLink to={`/singleproduct/${id}`}>
         <div className="card">
           <figure>
-            {image && image.length > 0 && (
+            {images && images.length > 0 && (
               <img
-                  src={`http://localhost:8080${image[0].url}`} // 👈 correct
+               src={`http://localhost:8080${images[0]?.url}`}// 👈 correct
                 alt={name}
               />
             )}

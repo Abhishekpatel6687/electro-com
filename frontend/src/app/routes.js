@@ -11,6 +11,7 @@ import ProtectedRoute from "../components/auth/ProtectedRoute";
 // import Header from "../components/layout/Header";
 import Footer from "../components/layout/Footer";
 import MainLayout from "../components/layout/MainLayout";
+import ProductForm from "../components/AdminDashboard/productAddForm/ProductForm";
 
 export default function AppRoutes() {
   const theme = {
@@ -49,6 +50,7 @@ export default function AppRoutes() {
             <Route path="/products" element={<Products />} />
             <Route path="/contact" element={<Contact />} />
             <Route path="/login" element={<Login />} />
+            <Route path="/productAdd" element={<ProductForm/>} />
           </Route>
 
           {/* <Route path="/singleproduct/:id" element={<SingleProduct/>} />
