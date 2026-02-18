@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import { useProductContext } from "../../context/ProductContext";
-import Product from "./components/Product";
+import Product from "../../components/product/Product";
 
 const FeatureProduct = () => {
   const { isLoading, featureProducts } = useProductContext();
