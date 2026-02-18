@@ -1,6 +1,6 @@
 import React from 'react'; 
 import FormatPrice from "../../Helpers/FormatPrice";
-import CartAmountToggle from '../CartAmountToggle';
+import CartAmountToggle from '../cart/CartAmountToggle';
 import { FaTrash } from 'react-icons/fa';
 import { useCartContext } from '../../context/Cart_Context';
 

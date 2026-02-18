@@ -1,7 +1,7 @@
 
 import styled from "styled-components";
 import { useCartContext } from "../../context/Cart_Context";
-import CartItem from "./components/CartItem";
+import CartItem from "../../components/cart/CartItem";
 import { NavLink } from "react-router-dom";
 import { Button } from "../../styles/Button";
 import FormatPrice from "../../Helpers/FormatPrice";

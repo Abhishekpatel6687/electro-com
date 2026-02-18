@@ -12,6 +12,8 @@ import ProtectedRoute from "../components/auth/ProtectedRoute";
 import Footer from "../components/layout/Footer";
 import MainLayout from "../components/layout/MainLayout";
 import ProductForm from "../components/AdminDashboard/productAddForm/ProductForm";
+import Cart from '../pages/cart/Cart'
+import SingleProduct from '../pages/single-product/SingleProduct'
 
 export default function AppRoutes() {
   const theme = {
@@ -53,8 +55,8 @@ export default function AppRoutes() {
             <Route path="/productAdd" element={<ProductForm/>} />
           </Route>
 
-          {/* <Route path="/singleproduct/:id" element={<SingleProduct/>} />
-        <Route path="/cart" element={<Cart/>} /> */}
+          <Route path="/singleproduct/:id" element={<SingleProduct/>} />
+        <Route path="/cart" element={<Cart/>} />
 
           <Route
             path="/dashboard"

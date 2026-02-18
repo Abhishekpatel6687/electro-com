@@ -2,7 +2,7 @@ import React from 'react'
 import { useState } from 'react';
 import styled from 'styled-components';
 import { FaCheck } from 'react-icons/fa';
-import CartAmountToggle from '../CartAmountToggle';
+import CartAmountToggle from './CartAmountToggle';
 import {NavLink} from "react-router-dom";
 import {Button} from "../../styles/Button";
 import { useCartContext } from '../../context/Cart_Context';

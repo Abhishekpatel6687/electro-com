@@ -1,6 +1,6 @@
 
 import FeatureProduct from "../products/FeatureProduct";
-import Services from "../../components/product/ServiceSection";
+import Services from "../../components/layout/ServiceSection";
 import Trusted from "../../components/common/Trusted";
 import HeroSection from "../../components/product/HeroSection";
 import Header from "../../components/layout/Header";
