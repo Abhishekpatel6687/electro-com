@@ -25,8 +25,8 @@ const products = [
     reviews: 128,
     image: [
       { url: "https://picsum.photos/500/500?random=11" },
-      { url: "https://picsum.photos/500/500?random=12" }
-    ]
+      { url: "https://picsum.photos/500/500?random=12" },
+    ],
   },
   {
     id: "2",
@@ -38,9 +38,7 @@ const products = [
     stock: 15,
     stars: 4.3,
     reviews: 89,
-    image: [
-      { url: "https://picsum.photos/500/500?random=21" }
-    ]
+    image: [{ url: "https://picsum.photos/500/500?random=21" }],
   },
   {
     id: "3",
@@ -52,9 +50,7 @@ const products = [
     stock: 18,
     stars: 4.6,
     reviews: 210,
-    image: [
-      { url: "https://picsum.photos/500/500?random=31" }
-    ]
+    image: [{ url: "https://picsum.photos/500/500?random=31" }],
   },
   {
     id: "4",
@@ -66,9 +62,7 @@ const products = [
     stock: 30,
     stars: 4.2,
     reviews: 164,
-    image: [
-      { url: "https://picsum.photos/500/500?random=41" }
-    ]
+    image: [{ url: "https://picsum.photos/500/500?random=41" }],
   },
   {
     id: "5",
@@ -80,9 +74,7 @@ const products = [
     stock: 12,
     stars: 4.7,
     reviews: 276,
-    image: [
-      { url: "https://picsum.photos/500/500?random=51" }
-    ]
+    image: [{ url: "https://picsum.photos/500/500?random=51" }],
   },
   {
     id: "6",
@@ -94,9 +86,7 @@ const products = [
     stock: 22,
     stars: 4.4,
     reviews: 143,
-    image: [
-      { url: "https://picsum.photos/500/500?random=61" }
-    ]
+    image: [{ url: "https://picsum.photos/500/500?random=61" }],
   },
   {
     id: "7",
@@ -108,9 +98,7 @@ const products = [
     stock: 35,
     stars: 4.5,
     reviews: 312,
-    image: [
-      { url: "https://picsum.photos/500/500?random=71" }
-    ]
+    image: [{ url: "https://picsum.photos/500/500?random=71" }],
   },
   {
     id: "8",
@@ -122,10 +110,8 @@ const products = [
     stock: 26,
     stars: 4.3,
     reviews: 156,
-    image: [
-      { url: "https://picsum.photos/500/500?random=81" }
-    ]
-  }
+    image: [{ url: "https://picsum.photos/500/500?random=81" }],
+  },
 ];
 
 // ... (previous imports)
@@ -133,31 +119,22 @@ const products = [
 const SingleProduct = () => {
   const { getSingleProduct, isSingleLoading, singleProduct } =
     useProductContext();
-console.log("singleProduct",singleProduct);
+  console.log("singleProduct", singleProduct);
   const { id } = useParams();
 
-  const {
-    name,
-    company,
-    price,
-    description,
-    stock,
-    stars,
-    reviews,
-    images,
-  } = singleProduct;
+  const { name, company, price, description, stock, stars, reviews, images } =
+    singleProduct;
 
   //   useEffect(() => {
-//     getSingleProduct(`${API}?id=${id}`);
-//   }, [id, getSingleProduct]);
+  //     getSingleProduct(`${API}?id=${id}`);
+  //   }, [id, getSingleProduct]);
 
-console.log("products",products);
+  console.log("products", products);
   useEffect(() => {
-
     if (!singleProduct || singleProduct.id !== id) {
       // If not, make the API call
       // getSingleProduct(`${API}?id=${id}`);
-      const product = products.find(p => p.id === id);
+      const product = products.find((p) => p.id === id);
       if (product) {
         getSingleProduct(product);
       }
@@ -175,7 +152,7 @@ console.log("products",products);
         <div className="grid grid-two-column">
           {/* product Images  */}
           <div className="product_images">
-            <MyImage imgs={image} />
+            <MyImage imgs={images} />
           </div>
 
           {/* product dAta  */}
