@@ -12,114 +12,15 @@ import Star from "../../components/common/Star";
 import AddToCart from "../../components/cart/AddToCart";
 
 // const API = "https://api.pujakaitem.com/api/products";
-const products = [
-  {
-    id: "1",
-    featured: true,
-    name: "Premium Cotton Shirt",
-    company: "Roadster",
-    price: 1499,
-    description: "Soft cotton shirt, perfect for daily wear",
-    stock: 25,
-    stars: 4.5,
-    reviews: 128,
-    image: [
-      { url: "https://picsum.photos/500/500?random=11" },
-      { url: "https://picsum.photos/500/500?random=12" },
-    ],
-  },
-  {
-    id: "2",
-    featured: true,
-    name: "Wireless Headphones",
-    company: "Boat",
-    price: 2999,
-    description: "Noise cancellation with deep bass",
-    stock: 15,
-    stars: 4.3,
-    reviews: 89,
-    image: [{ url: "https://picsum.photos/500/500?random=21" }],
-  },
-  {
-    id: "3",
-    featured: false,
-    name: "Running Shoes",
-    company: "Nike",
-    price: 2499,
-    description: "Lightweight running shoes for daily workouts",
-    stock: 18,
-    stars: 4.6,
-    reviews: 210,
-    image: [{ url: "https://picsum.photos/500/500?random=31" }],
-  },
-  {
-    id: "4",
-    featured: true,
-    name: "Smart Watch",
-    company: "Noise",
-    price: 1999,
-    description: "Fitness tracking smart watch with heart monitor",
-    stock: 30,
-    stars: 4.2,
-    reviews: 164,
-    image: [{ url: "https://picsum.photos/500/500?random=41" }],
-  },
-  {
-    id: "5",
-    featured: false,
-    name: "Bluetooth Speaker",
-    company: "JBL",
-    price: 3499,
-    description: "Portable speaker with powerful bass",
-    stock: 12,
-    stars: 4.7,
-    reviews: 276,
-    image: [{ url: "https://picsum.photos/500/500?random=51" }],
-  },
-  {
-    id: "6",
-    featured: false,
-    name: "Laptop Backpack",
-    company: "American Tourister",
-    price: 1599,
-    description: "Water-resistant backpack with laptop compartment",
-    stock: 22,
-    stars: 4.4,
-    reviews: 143,
-    image: [{ url: "https://picsum.photos/500/500?random=61" }],
-  },
-  {
-    id: "7",
-    featured: true,
-    name: "Gaming Mouse",
-    company: "Logitech",
-    price: 1299,
-    description: "High-precision gaming mouse with RGB lights",
-    stock: 35,
-    stars: 4.5,
-    reviews: 312,
-    image: [{ url: "https://picsum.photos/500/500?random=71" }],
-  },
-  {
-    id: "8",
-    featured: false,
-    name: "LED Desk Lamp",
-    company: "Philips",
-    price: 1199,
-    description: "Eye-care LED desk lamp with adjustable brightness",
-    stock: 26,
-    stars: 4.3,
-    reviews: 156,
-    image: [{ url: "https://picsum.photos/500/500?random=81" }],
-  },
-];
 
 // ... (previous imports)
 
 const SingleProduct = () => {
-  const { getSingleProduct, isSingleLoading, singleProduct } =
+  const { getSingleProduct, isSingleLoading, singleProduct, products } =
     useProductContext();
   console.log("singleProduct", singleProduct);
+  console.log("productssss", products);
+
   const { id } = useParams();
 
   const { name, company, price, description, stock, stars, reviews, images } =
@@ -129,15 +30,16 @@ const SingleProduct = () => {
   //     getSingleProduct(`${API}?id=${id}`);
   //   }, [id, getSingleProduct]);
 
-  console.log("products", products);
   useEffect(() => {
     if (!singleProduct || singleProduct.id !== id) {
       // If not, make the API call
       // getSingleProduct(`${API}?id=${id}`);
-      const product = products.find((p) => p.id === id);
-      if (product) {
-        getSingleProduct(product);
-      }
+      const product = products.find((item) => item.id == id);
+      console.log('sss',id,'jkjjj', product)
+      // if (product) {
+      // console.log('jjjjjjj',product)
+      //   getSingleProduct(product);
+      // }
     }
   }, [getSingleProduct, id, singleProduct]);
 

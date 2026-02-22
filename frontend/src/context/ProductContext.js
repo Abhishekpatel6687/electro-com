@@ -1,7 +1,7 @@
 import { createContext, useContext, useEffect, useReducer } from "react";
 import axios from "axios";
 import reducer from "../reducer/ProductReducer";
-import { products } from "../Helpers/ProductData";
+// import { products } from "../Helpers/ProductData";
 
 const AppContext = createContext();
 
@@ -23,7 +23,7 @@ console.log("initialState",initialState);
 const AppProvider = ({ children }) => {
   const [state, dispatch] = useReducer(reducer, initialState);
  
-  const getProducts = async (products) => {
+  const getProducts = async () => {
     dispatch({ type: "SET_LOADING" });
     
     try {
@@ -47,12 +47,12 @@ const AppProvider = ({ children }) => {
   };
 
   useEffect(() => {
-    getProducts(products);
+    getProducts();
   }, []);
 
   return (
     <>
-      <AppContext.Provider value={{ ...state, getSingleProduct }}>
+      <AppContext.Provider value={{ ...state, getSingleProduct, getProducts }}>
         {children}
       </AppContext.Provider>
     </>
