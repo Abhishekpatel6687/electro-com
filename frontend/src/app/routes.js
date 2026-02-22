@@ -57,39 +57,34 @@ export default function AppRoutes() {
             <Route path="/contact" element={<Contact />} />
             <Route path="/login" element={<Login />} />
             <Route path="/singleproduct/:id" element={<SingleProduct />} />
-            <Route path="/cart" element={<Cart />} />
-            {/* </Route> */}
-            <Route
-              path="/dashboard"
-              element={
-                <ProtectedRoute role="user">
-                  <Dashboard />
-                </ProtectedRoute>
-              }
-            />
-            {/* <Route element={<SuperMainLayout />}> */}
-            {/* <Route
-                path="/prodashboard"
-                element={
-                  <ProtectedRoute role="superadmin">
-                    <Route path="/prodashboard/productAdd" element={<ProductForm />} />
-                  <Home />
 
-                   </ProtectedRoute>
-                }
-              /> */}
-            <Route
-              path="/prodashboard"
-              element={
-                <ProtectedRoute role="superadmin">
-                  <SuperMainLayout />
-                </ProtectedRoute>
-              }
-            >
-              <Route index element={<Dashboard />} />
-              <Route path="productAdd" element={<ProductForm />} />
-            </Route>
           </Route>
+
+          <Route
+            path="/dashboard"
+            element={
+              <ProtectedRoute role="user">
+                <MainLayout />
+              </ProtectedRoute>
+            }
+          >
+            <Route index element={<Home />} />
+            <Route path="cart" element={<Cart />} />
+          </Route>
+
+          <Route
+            path="/prodashboard"
+            element={
+              <ProtectedRoute role="superadmin">
+                <SuperMainLayout />
+              </ProtectedRoute>
+            }
+          >
+            <Route index element={<Home />} />
+            <Route path="cart" element={<Cart />} />
+            <Route path="productAdd" element={<ProductForm />} />
+          </Route>
+          
           <Route path="*" element={<ErrorPage />} />
         </Routes>
         <Footer />

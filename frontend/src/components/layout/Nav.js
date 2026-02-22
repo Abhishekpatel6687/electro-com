@@ -6,23 +6,27 @@ import { FiShoppingCart } from "react-icons/fi";
 import { CgMenu, CgClose } from "react-icons/cg";
 import { useCartContext } from "../../context/Cart_Context";
 
-const Nav = () => {
+const Nav = () => { 
   const [menuIcon, setMenuIcon] = useState();
   const { total_Item } = useCartContext();
-const { user, logout } = useAuth();
-console.log(user,logout,'kkkkkkkkk')
+  const { user } = useAuth();
 
+  const handleDrower = () => {
+     setMenuIcon(false)
+  }
+  const logout = () => {
+     setMenuIcon(false)
+    window.location.reload();
+  }
   return (
     <Wrapper>
       <div className={menuIcon ? "navbar active" : "navbar"}>
-        {/* <ul className="navbar-lists">
-            
-   
+        <ul className="navbar-lists">
           <li>
             <NavLink
               to="/"
               className="navbar-link"
-              onClick={() => setMenuIcon(false)}
+              onClick={handleDrower}
             >
               Home
             </NavLink>
@@ -31,7 +35,7 @@ console.log(user,logout,'kkkkkkkkk')
             <NavLink
               to="/about"
               className="navbar-link"
-              onClick={() => setMenuIcon(false)}
+              onClick={handleDrower}
             >
               About
             </NavLink>
@@ -40,77 +44,44 @@ console.log(user,logout,'kkkkkkkkk')
             <NavLink
               to="/products"
               className="navbar-link"
-              onClick={() => setMenuIcon(false)}
+              onClick={handleDrower}
             >
               Products
-            </NavLink>
-          </li>
-              <li>
-            <NavLink
-              to="/productAdd"
-              className="navbar-link"
-              onClick={() => setMenuIcon(false)}
-            >
-              Add Products
             </NavLink>
           </li>
           <li>
             <NavLink
               to="/contact"
               className="navbar-link"
-              onClick={() => setMenuIcon(false)}
+              onClick={handleDrower}
             >
               Contact
             </NavLink>
-          </li>
-          
-          <li>
-            <NavLink
-              to="/login"
-              className="navbar-link"
-              onClick={() => setMenuIcon(false)}
-            >
-               Sign In
-            </NavLink>
-          </li>
-          <li>
-            <NavLink
-              to="/cart"
-              className="navbar-link cart-trolley--link"
-              onClick={() => setMenuIcon(false)}
-            >
-              <FiShoppingCart className="cart-trolley" />
-              <span className="cart-total--item"> {total_Item} </span>
-            </NavLink>
-          </li>
-        </ul> */}
-        <ul className="navbar-lists">
-          <li>
-            <NavLink to="/">Home</NavLink>
-          </li>
-          <li>
-            <NavLink to="/about">About</NavLink>
-          </li>
-          <li>
-            <NavLink to="/products">Products</NavLink>
-          </li>
-          <li>
-            <NavLink to="/contact">Contact</NavLink>
           </li>
 
           {/* If NOT Logged In */}
           {!user && (
             <li>
-              <NavLink to="/login">Sign In</NavLink>
+              <NavLink
+                to="/login"
+                className="navbar-link"
+                onClick={handleDrower}
+              >
+                Sign In
+              </NavLink>
             </li>
           )}
 
           {/* If Normal User */}
           {user?.role === "user" && (
             <li>
-              <NavLink to="/cart">
-                <FiShoppingCart />
-                <span>{total_Item}</span>
+              <NavLink
+                to="/dashboard/cart"
+                className="navbar-link cart-trolley--link"
+                onClick={handleDrower}
+              >
+                <FiShoppingCart className="cart-trolley" />
+                <span className="cart-total--item"> {total_Item} </span>
               </NavLink>
             </li>
           )}
@@ -119,22 +90,39 @@ console.log(user,logout,'kkkkkkkkk')
           {user?.role === "superadmin" && (
             <>
               <li>
-                <NavLink to="/cart">
-                  <FiShoppingCart />
-                  <span>{total_Item}</span>
+                <NavLink
+                  to="/dashboard/cart"
+                  className="navbar-link cart-trolley--link"
+                  onClick={handleDrower}
+                >
+                  <FiShoppingCart className="cart-trolley" />
+                  <span className="cart-total--item"> {total_Item} </span>
                 </NavLink>
               </li>
 
               <li>
-                <NavLink to="/prodashboard/productAdd">Add Product</NavLink>
+                <NavLink
+                  to="/prodashboard/productAdd"
+                  className="navbar-link"
+                  onClick={handleDrower}
+                >
+                  Add Products
+                </NavLink>
               </li>
             </>
           )}
 
           {/* Logout Button */}
           {user && (
-            <li>
-              <button onClick={logout}>Logout</button>
+          
+                <li>
+              <NavLink
+                to="/login"
+                className="navbar-link"
+                onClick={logout}
+              >
+                Logout
+              </NavLink>
             </li>
           )}
         </ul>
