@@ -81,8 +81,8 @@ export default function AppRoutes() {
             }
           >
             <Route index element={<Home />} />
-            <Route path="cart" element={<Cart />} />
             <Route path="productAdd" element={<ProductForm />} />
+            <Route path="cart" element={<Cart />} />
           </Route>
           
           <Route path="*" element={<ErrorPage />} />

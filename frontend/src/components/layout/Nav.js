@@ -6,37 +6,29 @@ import { FiShoppingCart } from "react-icons/fi";
 import { CgMenu, CgClose } from "react-icons/cg";
 import { useCartContext } from "../../context/Cart_Context";
 
-const Nav = () => { 
+const Nav = () => {
   const [menuIcon, setMenuIcon] = useState();
   const { total_Item } = useCartContext();
   const { user } = useAuth();
 
   const handleDrower = () => {
-     setMenuIcon(false)
-  }
+    setMenuIcon(false);
+  };
   const logout = () => {
-     setMenuIcon(false)
+    setMenuIcon(false);
     window.location.reload();
-  }
+  };
   return (
     <Wrapper>
       <div className={menuIcon ? "navbar active" : "navbar"}>
         <ul className="navbar-lists">
           <li>
-            <NavLink
-              to="/"
-              className="navbar-link"
-              onClick={handleDrower}
-            >
+            <NavLink to="/" className="navbar-link" onClick={handleDrower}>
               Home
             </NavLink>
           </li>
           <li>
-            <NavLink
-              to="/about"
-              className="navbar-link"
-              onClick={handleDrower}
-            >
+            <NavLink to="/about" className="navbar-link" onClick={handleDrower}>
               About
             </NavLink>
           </li>
@@ -91,6 +83,15 @@ const Nav = () => {
             <>
               <li>
                 <NavLink
+                  to="/prodashboard/productAdd"
+                  className="navbar-link"
+                  onClick={handleDrower}
+                >
+                  Add Products
+                </NavLink>
+              </li>
+              <li>
+                <NavLink
                   to="/dashboard/cart"
                   className="navbar-link cart-trolley--link"
                   onClick={handleDrower}
@@ -99,28 +100,13 @@ const Nav = () => {
                   <span className="cart-total--item"> {total_Item} </span>
                 </NavLink>
               </li>
-
-              <li>
-                <NavLink
-                  to="/prodashboard/productAdd"
-                  className="navbar-link"
-                  onClick={handleDrower}
-                >
-                  Add Products
-                </NavLink>
-              </li>
             </>
           )}
 
           {/* Logout Button */}
           {user && (
-          
-                <li>
-              <NavLink
-                to="/login"
-                className="navbar-link"
-                onClick={logout}
-              >
+            <li>
+              <NavLink to="/login" className="navbar-link" onClick={logout}>
                 Logout
               </NavLink>
             </li>
