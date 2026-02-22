@@ -11,9 +11,11 @@ import ProtectedRoute from "../components/auth/ProtectedRoute";
 // import Header from "../components/layout/Header";
 import Footer from "../components/layout/Footer";
 import MainLayout from "../components/layout/MainLayout";
+import SuperMainLayout from "../components/AdminDashboard/SuperMainLayout/SuperMainLayout";
+
 import ProductForm from "../components/AdminDashboard/productAddForm/ProductForm";
-import Cart from '../pages/cart/Cart'
-import SingleProduct from '../pages/single-product/SingleProduct'
+import Cart from "../pages/cart/Cart";
+import SingleProduct from "../pages/single-product/SingleProduct";
 
 export default function AppRoutes() {
   const theme = {
@@ -44,41 +46,53 @@ export default function AppRoutes() {
   return (
     <ThemeProvider theme={theme}>
       <BrowserRouter>
-       {/* <Header /> // aise bbhi direct sb pe header laga sakte ho  */}
+        {/* <Header /> // aise bbhi direct sb pe header laga sakte ho  */}
         <Routes>
-                 <Route element={<MainLayout />}> // aise header sab se lagana sahi rahega
+          <Route element={<MainLayout />}>
+            {" "}
+            // aise header sab se lagana sahi rahega
             <Route path="/" element={<Home />} />
             <Route path="/about" element={<About />} />
             <Route path="/products" element={<Products />} />
             <Route path="/contact" element={<Contact />} />
             <Route path="/login" element={<Login />} />
-            <Route path="/productAdd" element={<ProductForm/>} />
+            <Route path="/singleproduct/:id" element={<SingleProduct />} />
+            <Route path="/cart" element={<Cart />} />
+            {/* </Route> */}
+            <Route
+              path="/dashboard"
+              element={
+                <ProtectedRoute role="user">
+                  <Dashboard />
+                </ProtectedRoute>
+              }
+            />
+            {/* <Route element={<SuperMainLayout />}> */}
+            {/* <Route
+                path="/prodashboard"
+                element={
+                  <ProtectedRoute role="superadmin">
+                    <Route path="/prodashboard/productAdd" element={<ProductForm />} />
+                  <Home />
+
+                   </ProtectedRoute>
+                }
+              /> */}
+            <Route
+              path="/prodashboard"
+              element={
+                <ProtectedRoute role="superadmin">
+                  <SuperMainLayout />
+                </ProtectedRoute>
+              }
+            >
+              <Route index element={<Dashboard />} />
+              <Route path="productAdd" element={<ProductForm />} />
+            </Route>
           </Route>
-
-          <Route path="/singleproduct/:id" element={<SingleProduct/>} />
-        <Route path="/cart" element={<Cart/>} />
-
-          <Route
-            path="/dashboard"
-            element={
-              <ProtectedRoute role="user">
-                <Dashboard />
-              </ProtectedRoute>
-            }
-          />
-
-          <Route
-            path="/prodashboard"
-            element={
-              <ProtectedRoute role="superadmin">
-                <Home />
-              </ProtectedRoute>
-            }
-          />
-
           <Route path="*" element={<ErrorPage />} />
         </Routes>
-        <Footer/>
+        <Footer />
       </BrowserRouter>
     </ThemeProvider>
   );

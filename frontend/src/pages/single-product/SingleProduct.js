@@ -144,7 +144,7 @@ console.log("singleProduct",singleProduct);
     stock,
     stars,
     reviews,
-    image,
+    images,
   } = singleProduct;
 
   //   useEffect(() => {

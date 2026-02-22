@@ -1,19 +1,21 @@
 import React, { useState } from "react";
 import { NavLink } from "react-router-dom";
 import styled from "styled-components";
+import { useAuth } from "../../context/AuthContext";
 import { FiShoppingCart } from "react-icons/fi";
 import { CgMenu, CgClose } from "react-icons/cg";
 import { useCartContext } from "../../context/Cart_Context";
 
-
 const Nav = () => {
   const [menuIcon, setMenuIcon] = useState();
   const { total_Item } = useCartContext();
+const { user, logout } = useAuth();
+console.log(user,logout,'kkkkkkkkk')
 
   return (
     <Wrapper>
       <div className={menuIcon ? "navbar active" : "navbar"}>
-        <ul className="navbar-lists">
+        {/* <ul className="navbar-lists">
             
    
           <li>
@@ -81,6 +83,60 @@ const Nav = () => {
               <span className="cart-total--item"> {total_Item} </span>
             </NavLink>
           </li>
+        </ul> */}
+        <ul className="navbar-lists">
+          <li>
+            <NavLink to="/">Home</NavLink>
+          </li>
+          <li>
+            <NavLink to="/about">About</NavLink>
+          </li>
+          <li>
+            <NavLink to="/products">Products</NavLink>
+          </li>
+          <li>
+            <NavLink to="/contact">Contact</NavLink>
+          </li>
+
+          {/* If NOT Logged In */}
+          {!user && (
+            <li>
+              <NavLink to="/login">Sign In</NavLink>
+            </li>
+          )}
+
+          {/* If Normal User */}
+          {user?.role === "user" && (
+            <li>
+              <NavLink to="/cart">
+                <FiShoppingCart />
+                <span>{total_Item}</span>
+              </NavLink>
+            </li>
+          )}
+
+          {/* If Super Admin */}
+          {user?.role === "superadmin" && (
+            <>
+              <li>
+                <NavLink to="/cart">
+                  <FiShoppingCart />
+                  <span>{total_Item}</span>
+                </NavLink>
+              </li>
+
+              <li>
+                <NavLink to="/prodashboard/productAdd">Add Product</NavLink>
+              </li>
+            </>
+          )}
+
+          {/* Logout Button */}
+          {user && (
+            <li>
+              <button onClick={logout}>Logout</button>
+            </li>
+          )}
         </ul>
 
         {/* Two button for open and close of menu */}
@@ -217,7 +273,7 @@ const Wrapper = styled.section`
       opacity: 0;
       transform: translateX(100%);
       /* transform-origin: top; */
-      transition: all .5s linear;
+      transition: all 0.5s linear;
     }
 
     .active .navbar-lists {
@@ -226,7 +282,7 @@ const Wrapper = styled.section`
       transform: translateX(0);
       z-index: 999;
       transform-origin: right;
-      transition: all .5s linear;
+      transition: all 0.5s linear;
 
       .navbar-link {
         font-size: 4.2rem;

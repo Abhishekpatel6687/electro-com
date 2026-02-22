@@ -8,14 +8,14 @@ const Products = () => {
   return (
     <Wrapper>
       <div className="container grid grid-filter-column">
-        <div>
+        {/* <div>
           <FilterSection />
-        </div>
+        </div> */}
 
         <section className="product-view--sort">
-          <div className="sort-filter">
+          {/* <div className="sort-filter">
             <Sort />
-          </div>
+          </div> */}
           <div className="main-product">
             <ProductList />
           </div>
