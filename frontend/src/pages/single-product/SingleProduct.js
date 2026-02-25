@@ -58,7 +58,7 @@ const imageArray =
     ...img,
     url: `http://localhost:8080${img.url}`,
   })) || [];
-  
+
   return (
     <Wrapper>
       <PageNavigation title={name} />
@@ -71,7 +71,6 @@ const imageArray =
 
           {/* product dAta  */}
           <div className="product-data">
-        <h1>SingleProduct Page</h1>
 
             <h2>{name}</h2>
             <Star stars={stars} reviews={reviews} />
