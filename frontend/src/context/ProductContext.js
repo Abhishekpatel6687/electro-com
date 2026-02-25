@@ -39,8 +39,8 @@ const AppProvider = ({ children }) => {
     console.log("get single product function called",product);
 
     try {
-        const res = await axios.get(`${API}/${product.id}`);
-      dispatch({ type: "SET_SINGLE_PRODUCT", payload: res.data });
+        // const res = await axios.get(`${API}/${product.id}`);
+      dispatch({ type: "SET_SINGLE_PRODUCT", payload: product });
     } catch (error) {
       dispatch({ type: "SET_SINGLE_ERROR" });
     }

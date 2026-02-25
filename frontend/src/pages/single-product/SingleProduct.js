@@ -23,30 +23,43 @@ const SingleProduct = () => {
 
   const { id } = useParams();
 
-  const { name, company, price, description, stock, stars, reviews, images } =
-    singleProduct;
+  const {
+    category,
+    company,
+    created_at,
+    description,
+    featured,
+    images,
+    name,
+    price,
+    stock,
+    stars,
+    reviews,
+  } = singleProduct;
 
-  //   useEffect(() => {
-  //     getSingleProduct(`${API}?id=${id}`);
-  //   }, [id, getSingleProduct]);
 
   useEffect(() => {
     if (!singleProduct || singleProduct.id !== id) {
-      // If not, make the API call
-      // getSingleProduct(`${API}?id=${id}`);
       const product = products.find((item) => item.id == id);
-      console.log('sss',id,'jkjjj', product)
-      // if (product) {
-      // console.log('jjjjjjj',product)
-      //   getSingleProduct(product);
-      // }
+      console.log("sss", id, "jkjjj", product);
+      if (product) {
+        console.log("jjjjjjj", product);
+        getSingleProduct(product);
+      }
     }
   }, [getSingleProduct, id, singleProduct]);
-
+  
   if (isSingleLoading) {
     return <div className="page_loading">Loading.....</div>;
   }
-
+  
+const imageURL = (`http://localhost:8080${images?.[0]?.url}`)
+console.log(imageURL,'jjjjjj')
+const imageArray =
+  images?.map((img) => ({
+    ...img,
+    url: `http://localhost:8080${img.url}`,
+  })) || [];
   return (
     <Wrapper>
       <PageNavigation title={name} />
@@ -54,11 +67,13 @@ const SingleProduct = () => {
         <div className="grid grid-two-column">
           {/* product Images  */}
           <div className="product_images">
-            <MyImage imgs={images} />
+            <MyImage imgs={imageArray} />
           </div>
 
           {/* product dAta  */}
           <div className="product-data">
+        <h1>SingleProduct Page</h1>
+
             <h2>{name}</h2>
             <Star stars={stars} reviews={reviews} />
 
@@ -107,7 +122,7 @@ const SingleProduct = () => {
               </p>
             </div>
             <hr />
-            {stock > 0 && <AddToCart product={singleProduct} />}
+            {/* {stock > 0 && <AddToCart product={singleProduct} />} */}
           </div>
         </div>
       </Container>

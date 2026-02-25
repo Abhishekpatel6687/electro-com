@@ -1,9 +1,11 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 
-const MyImage = ({ imgs = [{ url: "" }] }) => {
-  const [mainImage, setMainImage] = useState(imgs[0]);
+// const MyImage = ({ imgs = [{ url: "" }] }) => {
+//   const [mainImage, setMainImage] = useState(imgs[0]);
 
+const MyImage = ({ imgs}) => {
+  const [mainImage, setMainImage] = useState(imgs);
   return (
     <Wrapper>
       <div className="grid grid-four-column">
