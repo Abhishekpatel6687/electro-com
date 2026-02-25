@@ -47,7 +47,7 @@ const SingleProduct = () => {
         getSingleProduct(product);
       }
     }
-  }, [getSingleProduct, id, singleProduct]);
+  }, [getSingleProduct, id, singleProduct, products]);
   
   if (isSingleLoading) {
     return <div className="page_loading">Loading.....</div>;
