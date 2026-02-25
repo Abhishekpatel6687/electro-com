@@ -53,13 +53,12 @@ const SingleProduct = () => {
     return <div className="page_loading">Loading.....</div>;
   }
   
-const imageURL = (`http://localhost:8080${images?.[0]?.url}`)
-console.log(imageURL,'jjjjjj')
 const imageArray =
   images?.map((img) => ({
     ...img,
     url: `http://localhost:8080${img.url}`,
   })) || [];
+  
   return (
     <Wrapper>
       <PageNavigation title={name} />
