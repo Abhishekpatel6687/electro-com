@@ -11,15 +11,9 @@ import FormatPrice from "../../Helpers/FormatPrice";
 import Star from "../../components/common/Star";
 import AddToCart from "../../components/cart/AddToCart";
 
-// const API = "https://api.pujakaitem.com/api/products";
-
-// ... (previous imports)
-
 const SingleProduct = () => {
   const { getSingleProduct, isSingleLoading, singleProduct, products } =
     useProductContext();
-  console.log("singleProduct", singleProduct);
-  console.log("productssss", products);
 
   const { id } = useParams();
 
@@ -37,27 +31,24 @@ const SingleProduct = () => {
     reviews,
   } = singleProduct;
 
-
   useEffect(() => {
     if (!singleProduct || singleProduct.id !== id) {
       const product = products.find((item) => item.id == id);
-      console.log("sss", id, "jkjjj", product);
       if (product) {
-        console.log("jjjjjjj", product);
         getSingleProduct(product);
       }
     }
   }, [getSingleProduct, id, singleProduct, products]);
-  
+
   if (isSingleLoading) {
     return <div className="page_loading">Loading.....</div>;
   }
-  
-const imageArray =
-  images?.map((img) => ({
-    ...img,
-    url: `http://localhost:8080${img.url}`,
-  })) || [];
+
+  const imageArray =
+    images?.map((img) => ({
+      ...img,
+      url: `http://localhost:8080${img.url}`,
+    })) || [];
 
   return (
     <Wrapper>
@@ -71,7 +62,6 @@ const imageArray =
 
           {/* product dAta  */}
           <div className="product-data">
-
             <h2>{name}</h2>
             <Star stars={stars} reviews={reviews} />
 

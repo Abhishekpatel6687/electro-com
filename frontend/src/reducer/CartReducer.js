@@ -1,9 +1,6 @@
 const CartReducer = (state, action) => {
   if (action.type === "ADD_TO_CART") {
     let { id, color, amount, product } = action.payload;
-    // console.log("dfghj",product)
-
-    // tackle the existing products
 
     let existingProduct = state.cart.find((curItem) => {
       return curItem.id === id + color;
@@ -97,7 +94,7 @@ const CartReducer = (state, action) => {
 
   if (action.type === "REMOVE_ITEM") {
     let updatedCart = state.cart.filter(
-      (curElem) => curElem.id !== action.payload
+      (curElem) => curElem.id !== action.payload,
     );
     return {
       ...state,

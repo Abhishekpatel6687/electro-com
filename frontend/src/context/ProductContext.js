@@ -19,7 +19,6 @@ const initialState = {
   singleProduct: {},
 };
 
-console.log("initialState",initialState);
 const AppProvider = ({ children }) => {
   const [state, dispatch] = useReducer(reducer, initialState);
  
@@ -36,7 +35,6 @@ const AppProvider = ({ children }) => {
   
   // my 2nd api call for single product
   const getSingleProduct = async (product) => {
-    console.log("get single product function called",product);
 
     try {
         // const res = await axios.get(`${API}/${product.id}`);
