@@ -2,12 +2,13 @@ import { createContext, useContext, useEffect, useReducer } from "react";
 import axios from "axios";
 import reducer from "../reducer/ProductReducer";
 // import { products } from "../Helpers/ProductData";
+import API from "../services/api"
 
 const AppContext = createContext();
 
 
 
-const API = "http://localhost:8080/api/products";
+// const API = "http://localhost:8080/api/products";
 // const API = "https://electro-com.onrender.com/api/products"
 
 const initialState = {
@@ -26,7 +27,7 @@ const AppProvider = ({ children }) => {
     dispatch({ type: "SET_LOADING" });
     
     try {
-    const res = await axios.get(API);
+    const res = await API.get("/products");
       dispatch({ type: "SET_API_DATA", payload: res.data });
     } catch (error) {
       dispatch({ type: "API_ERROR" });

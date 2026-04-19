@@ -8,7 +8,7 @@ import { useAuth } from "../../context/AuthContext";
 function AuthPage() {
   const [isLogin, setIsLogin] = useState(true);
   const navigate = useNavigate();
-  const {login, setUser } = useAuth();
+  const { login, setUser } = useAuth();
 
   const [loginForm, setLoginForm] = useState({
     email: "",
@@ -21,17 +21,20 @@ function AuthPage() {
     password: "",
   });
 
+
   const handleLogin = async (e) => {
     e.preventDefault();
+    const upperCaseUserData = {
+      email: loginForm.email.toUpperCase(),
+      password: loginForm.password,
+    };
     try {
-      const res = await API.post("/auth/login", loginForm);
+      await API.post("/auth/login", upperCaseUserData);
 
-      const userRes = await axios.get(
-        "http://localhost:8080/api/auth/me",
-        { withCredentials: true }
-      );
-
+      const userRes = await API.get("/auth/me");
+    
       setUser(userRes.data.user);
+      
 
       if (userRes.data.user.role === "superadmin") {
         navigate("/prodashboard");
@@ -44,9 +47,14 @@ function AuthPage() {
   };
 
   const handleRegister = async (e) => {
+    const upperCaseRegisterForm = {
+      email: registerForm.email.toUpperCase(),
+      password: registerForm.password,
+      username: registerForm.username,
+    };
     e.preventDefault();
     try {
-      await API.post("/auth/register", registerForm);
+      await API.post("/auth/register", upperCaseRegisterForm);
       alert("Registered Successfully");
       setIsLogin(true);
     } catch (err) {
@@ -57,7 +65,7 @@ function AuthPage() {
   return (
     <Wrapper>
       <div className={`container ${isLogin ? "" : "right-panel-active"}`}>
-        
+
         {/* SIGN UP */}
         <div className="form-container sign-up-container">
           <form onSubmit={handleRegister}>

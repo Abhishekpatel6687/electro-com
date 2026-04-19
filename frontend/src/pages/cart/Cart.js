@@ -97,7 +97,7 @@ const Wrapper = styled.section`
   }
   .cart-heading {
     text-align: center;
-    text-transform: uppercase;
+    // text-transform: uppercase;
   }
   hr {
     margin-top: 1rem;

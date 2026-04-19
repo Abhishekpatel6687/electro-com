@@ -1,23 +1,40 @@
 import React, { useState } from "react";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { useAuth } from "../../context/AuthContext";
 import { FiShoppingCart } from "react-icons/fi";
 import { CgMenu, CgClose } from "react-icons/cg";
 import { useCartContext } from "../../context/Cart_Context";
+import API from "../../services/api";
 
 const Nav = () => {
   const [menuIcon, setMenuIcon] = useState();
   const { total_Item } = useCartContext();
-  const { user } = useAuth();
+  const navigate = useNavigate();
+
+  // const { user } = useAuth();
+  const { user, setUser } = useAuth();
+
+  console.log(user,'userrr')
 
   const handleDrower = () => {
     setMenuIcon(false);
   };
-  const logout = () => {
+
+  // const logout = () => {
+  //   setMenuIcon(false);
+  //   window.location.reload();
+  // };
+
+  const logout = async () => {
     setMenuIcon(false);
-    window.location.reload();
+
+    await API.post("/auth/logout"); // ⭐ cookie clear
+
+    setUser(null); // ⭐ frontend state clear
+    navigate("/login"); // ⭐ redirect
   };
+
   return (
     <Wrapper>
       <div className={menuIcon ? "navbar active" : "navbar"}>
@@ -92,7 +109,7 @@ const Nav = () => {
               </li>
               <li>
                 <NavLink
-                  to="/dashboard/cart"
+                  to="/prodashboard/cart"
                   className="navbar-link cart-trolley--link"
                   onClick={handleDrower}
                 >
