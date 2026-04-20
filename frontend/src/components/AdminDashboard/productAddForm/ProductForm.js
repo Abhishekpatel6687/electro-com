@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import API from "../../../services/api";
 
@@ -14,6 +15,7 @@ const ProductForm = () => {
     featured: false,
     category: "",
   });
+  const navigate = useNavigate();
 
   const [image, setImage] = useState(null);
   const [preview, setPreview] = useState(null);
@@ -47,23 +49,23 @@ const ProductForm = () => {
 
     try {
       const res = await API.post("/products", formData);
-
       alert(res.data.message);
-
-    //   setForm({
-    //     name: "",
-    //     company: "",
-    //     price: "",
-    //     description: "",
-    //     stock: "",
-    //     stars: "",
-    //     reviews: "",
-    //     featured: false,
-    //     category: "",
-    //   });
-
-    //   setImage(null);
-    //   setPreview(null);
+      
+      setForm({
+        name: "",
+        company: "",
+        price: "",
+        description: "",
+        stock: "",
+        stars: "",
+        reviews: "",
+        featured: false,
+        category: "",
+      });
+      
+      setImage(null);
+      setPreview(null);
+      navigate("/products")
     } catch (err) {
       alert(err.response?.data?.message);
     }
