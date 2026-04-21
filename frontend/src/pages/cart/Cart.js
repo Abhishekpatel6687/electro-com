@@ -7,14 +7,15 @@ import FormatPrice from "../../Helpers/FormatPrice";
 
 const Cart = () => {
   const { cart, clearCart, total_price, shipping_fee } = useCartContext();
+  console.log(total_price,'addToCartaddToCartaddToCart',cart)
 
-  if (cart.length === 0) {
-    return (
-      <EmptyDiv>
-        <h3>No Cart in Items</h3>
-      </EmptyDiv>
-    );
-  }
+  // if (cart.length === 0) {
+  //   return (
+  //     <EmptyDiv>
+  //       <h3>No Cart in Items</h3>
+  //     </EmptyDiv>
+  //   );
+  // }
 
   return (
     <Wrapper>
@@ -27,23 +28,23 @@ const Cart = () => {
           <p>Remove</p>
         </div>
         <hr />
-        <div className="cart-item">
+        {/* <div className="cart-item">
           {cart.map((curElem) => {
             console.log(cart);
             return <CartItem key={curElem.id} {...curElem} />;
           })}
-        </div>
+        </div> */}
         <hr />
-        <div className="cart-two-button">
+        {/* <div className="cart-two-button">
           <NavLink to="/products">
             <Button> Continue Shopping </Button>
           </NavLink>
           <Button className="btn btn-clear" onClick={clearCart}>
             clear cart
           </Button>
-        </div>
+        </div> */}
         {/* order total amount */}
-        <div className="order-total--amount">
+        {/* <div className="order-total--amount">
           <div className="order-total--subdata">
             <div>
               <p>Subtotal:</p>
@@ -65,7 +66,7 @@ const Cart = () => {
               </p>
             </div>
           </div>
-        </div>
+        </div> */}
       </div>
     </Wrapper>
   );

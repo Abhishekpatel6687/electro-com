@@ -38,7 +38,7 @@ const SingleProduct = () => {
         getSingleProduct(product);
       }
     }
-  }, [getSingleProduct, id, singleProduct, products]);
+  }, [id, singleProduct, products]);
 
   if (isSingleLoading) {
     return <div className="page_loading">Loading.....</div>;
@@ -110,7 +110,7 @@ const SingleProduct = () => {
               </p>
             </div>
             <hr />
-            {/* {stock > 0 && <AddToCart product={singleProduct} />} */}
+            {stock > 0 && <AddToCart product={singleProduct} />}
           </div>
         </div>
       </Container>
