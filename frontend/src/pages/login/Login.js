@@ -32,8 +32,10 @@ function AuthPage() {
       await API.post("/auth/login", upperCaseUserData);
 
       const userRes = await API.get("/auth/me");
-    
+    console.log(userRes,'userResddd')
       setUser(userRes.data.user);
+
+localStorage.setItem("user", JSON.stringify(userRes.data.user));
       
 
       if (userRes.data.user.role === "superadmin") {

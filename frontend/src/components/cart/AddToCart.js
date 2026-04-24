@@ -3,16 +3,16 @@ import { useState } from "react";
 import styled from "styled-components";
 import { FaCheck } from "react-icons/fa";
 import CartAmountToggle from "./CartAmountToggle";
-import { NavLink } from "react-router-dom";
+import { json, NavLink,useNavigate } from "react-router-dom";
 import { Button } from "../../styles/Button";
 import { useCartContext } from "../../context/Cart_Context";
 
 const AddToCart = ({ product }) => {
   const { addToCart } = useCartContext();
+  const navigate = useNavigate()
   const { id,
     //  colors, 
-     stock } = product;
-console.log(product,'productproductproduct')
+    stock } = product;
   // const [color, setColor] = useState(colors[0]);
   const [amount, setAmount] = useState(1);
 
@@ -23,6 +23,50 @@ console.log(product,'productproductproduct')
   const setIncrease = () => {
     amount < stock ? setAmount(amount + 1) : setAmount(stock);
   };
+
+  const loginUser = JSON.parse(localStorage.getItem("user"));
+
+  const handleSubmitAddToCart = async (id,
+    // color, 
+    amount, product) => {
+
+    await fetch("http://localhost:8080/api/addToCart", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        user_id: loginUser?.id,
+        product_id: id,
+        amount,
+      }),
+    });
+
+
+    const getAddToCardData = await fetch(`http://localhost:8080/api/addToCart/${loginUser.id}`, {
+      method: "GET",
+    });
+    const ff = await getAddToCardData.json()
+    console.log(ff, 'jjj')
+    const loginUserRole = loginUser.role;
+    console.log(loginUser,'hhh')
+
+    if(loginUserRole){
+      if(loginUserRole == "superadmin"){
+          navigate("/prodashboard/cart")
+      }else{
+          navigate("/dashboard/cart")
+      }
+    }else{
+      navigate("/login")
+    }
+    // const finalCartData = {
+    //   ...product,   // pura product data
+    //   amount: amount  // amount override/add
+    // };
+
+    // console.log(finalCartData, "finalCartData ✅");
+  }
 
   return (
     <Wrapper>
@@ -52,12 +96,14 @@ console.log(product,'productproductproduct')
         setDecrease={setDecrease}
         setIncrease={setIncrease}
       />
-
-      <NavLink to="/cart" onClick={() => addToCart(id, 
+      {/* <NavLink to="/prodashboard/cart" onClick={() => AddToCart(id,  */}
+      {/* <NavLink  onClick={() => handleSubmitAddToCartid,
         // color, 
-        amount, product)}>
-        <Button className="btn">Add To Cart</Button>
-      </NavLink>
+        amount, product)}> */}
+      <Button onClick={() => handleSubmitAddToCart(id,
+        // color, 
+        amount, product)} className="btn">Add To Cart</Button>
+      {/* </NavLink> */}
     </Wrapper>
   );
 };

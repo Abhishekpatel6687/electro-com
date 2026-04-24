@@ -7,6 +7,8 @@ import { initializeTables } from "./database/initializeTables.js";
 import path from "path";
 import { fileURLToPath } from "url";
 import authRoutes from "./routes/authRoutes.js";
+import cartRoutes from "./routes/cartRoutes.js";
+
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -34,6 +36,8 @@ initializeTables();
 // Routes
 app.use("/api/auth", authRoutes);
 app.use("/api/products", productRoutes);
+app.use("/api/addToCart", cartRoutes);
+
 
 app.get("/check-products", async (req, res) => {
   try {

@@ -15,22 +15,16 @@ const Nav = () => {
   // const { user } = useAuth();
   const { user, setUser } = useAuth();
 
-  console.log(user,'userrr')
-
   const handleDrower = () => {
     setMenuIcon(false);
   };
 
-  // const logout = () => {
-  //   setMenuIcon(false);
-  //   window.location.reload();
-  // };
 
   const logout = async () => {
     setMenuIcon(false);
 
     await API.post("/auth/logout"); // ⭐ cookie clear
-
+    localStorage.clear();
     setUser(null); // ⭐ frontend state clear
     navigate("/login"); // ⭐ redirect
   };
