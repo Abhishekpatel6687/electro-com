@@ -14,13 +14,39 @@ const CartItem = ({ id, name, image_url, color, price, stock,
 
   console.log(amountt, stock, "check increment");
 
-  const setDecrease = () => {
-    amountt > 1 ? setAmount(amountt - 1) : setAmount(1);
-  }
+  const setIncrease = async () => {
 
-  const setIncrease = () => {
-    amountt < stock ? setAmount(amountt + 1) : setAmount(stock)
-  }
+    if (amountt < stock) {
+      const newAmount = amountt + 1;
+      setAmount(newAmount);
+
+      await fetch(`http://localhost:8080/api/addToCart/${id}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ amount: newAmount }),
+      });
+    }
+  };
+
+
+  const setDecrease = async () => {
+
+    if (amountt > 1) {
+      const newAmount = amountt - 1;
+      setAmount(newAmount);
+
+      await fetch(`http://localhost:8080/api/addToCart/${id}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ amount: newAmount }),
+      });
+    }
+  };
+
 
   const removeItem = async (id) => {
     try {
@@ -60,6 +86,7 @@ const CartItem = ({ id, name, image_url, color, price, stock,
       <div>
         <CartAmountToggle
           amount={amountt}
+          cartId={id}
           setDecrease={setDecrease}
           setIncrease={setIncrease}
         />
@@ -67,7 +94,7 @@ const CartItem = ({ id, name, image_url, color, price, stock,
 
       {/* Subtotal */}
       <div className='cart-hide'>
-        <p><FormatPrice price={price * amount} /></p>
+        <p><FormatPrice price={price * amountt} /></p>
       </div>
       <div>
         <FaTrash className='remove_icon' onClick={() => removeItem(id)} />
