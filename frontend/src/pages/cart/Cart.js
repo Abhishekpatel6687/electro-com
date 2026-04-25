@@ -156,8 +156,8 @@ const Wrapper = styled.section`
   .cart-image--name {
     /* background-color: red; */
     align-items: center;
-    display: grid;
-    gap: 1rem;
+    // display: grid;
+    // gap: 1rem;
     grid-template-columns: 0.4fr 1fr;
     text-transform: capitalize;
     text-align: left;
