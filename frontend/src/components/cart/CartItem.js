@@ -98,13 +98,6 @@ const CartItem = ({ id, name, image_url, color, price, stock,
       <div>
         <FaTrash className='remove_icon' onClick={() => removeItem(id)} />
       </div>
-      {/* <div className="cart-container"> */}
-      {/* <div className="cart-items"> */}
-      {/* cart items list */}
-      {/* </div> */}
-
-      {/* <CartTotal cartData={cartData} /> */}
-      {/* </div> */}
     </div>
   )
 }
