@@ -3,9 +3,10 @@ import FormatPrice from "../../Helpers/FormatPrice";
 import CartAmountToggle from '../cart/CartAmountToggle';
 import { FaTrash } from 'react-icons/fa';
 import { useCartContext } from '../../context/Cart_Context';
+import CartTotal from './CartTotal';
 
 const CartItem = ({ id, name, image_url, color, price, stock,
-  amount
+  amount, fetchCart
 }) => {
 
   // const { removeItem, setDecrease, setIncrement } = useCartContext();
@@ -14,19 +15,25 @@ const CartItem = ({ id, name, image_url, color, price, stock,
 
   console.log(amountt, stock, "check increment");
 
+  const updateCart = async (newAmount) => {
+    await fetch(`http://localhost:8080/api/addToCart/${id}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ amount: newAmount }),
+    });
+
+    fetchCart(); // refresh data
+  };
+
+
   const setIncrease = async () => {
 
     if (amountt < stock) {
       const newAmount = amountt + 1;
       setAmount(newAmount);
-
-      await fetch(`http://localhost:8080/api/addToCart/${id}`, {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ amount: newAmount }),
-      });
+      updateCart(newAmount);
     }
   };
 
@@ -36,14 +43,6 @@ const CartItem = ({ id, name, image_url, color, price, stock,
     if (amountt > 1) {
       const newAmount = amountt - 1;
       setAmount(newAmount);
-
-      await fetch(`http://localhost:8080/api/addToCart/${id}`, {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ amount: newAmount }),
-      });
     }
   };
 
@@ -53,7 +52,7 @@ const CartItem = ({ id, name, image_url, color, price, stock,
       await fetch(`http://localhost:8080/api/addToCart/deleteCartItem/${id}`, {
         method: "DELETE",
       });
-
+      fetchCart();
       // const res = await fetch(`http://localhost:8080/api/addToCart/${loginUser?.id}`);
       // const data = await res.json();
       // setCartData(data); // agar state hai
@@ -66,7 +65,7 @@ const CartItem = ({ id, name, image_url, color, price, stock,
     <div className='cart-heading grid grid-five-column'>
       <div style={{ display: "flex", gap: "1rem" }}>
         <div className='cart-image--name'>
-          <img src={`http://localhost:8080${image_url}`} alt={id} />
+          <img src={`http://localhost:8080${image_url}`} alt={id} width={60} />
         </div>
         <div>
           <p>{name}</p>
@@ -99,6 +98,13 @@ const CartItem = ({ id, name, image_url, color, price, stock,
       <div>
         <FaTrash className='remove_icon' onClick={() => removeItem(id)} />
       </div>
+      {/* <div className="cart-container"> */}
+      {/* <div className="cart-items"> */}
+      {/* cart items list */}
+      {/* </div> */}
+
+      {/* <CartTotal cartData={cartData} /> */}
+      {/* </div> */}
     </div>
   )
 }

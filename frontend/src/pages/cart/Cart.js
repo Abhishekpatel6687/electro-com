@@ -5,6 +5,7 @@ import { NavLink, useLocation } from "react-router-dom";
 import { Button } from "../../styles/Button";
 import FormatPrice from "../../Helpers/FormatPrice";
 import { useEffect, useState } from "react";
+import CartTotal from "../../components/cart/CartTotal";
 
 const Cart = () => {
   // const { cart, clearCart, total_price, shipping_fee } = useCartContext();
@@ -17,17 +18,17 @@ const Cart = () => {
 
   console.log(cartData, 'dddddddddddddddd ')
 
-  useEffect(() => {
-    const fetchCart = async () => {
-      try {
-        const res = await fetch(`http://localhost:8080/api/addToCart/${loginUser?.id}`);
-        const data = await res.json();
-        setCartData(data);
-      } catch (error) {
-        console.log("Error fetching cart:", error);
-      }
-    };
+  const fetchCart = async () => {
+    try {
+      const res = await fetch(`http://localhost:8080/api/addToCart/${loginUser?.id}`);
+      const data = await res.json();
+      setCartData(data);
+    } catch (error) {
+      console.log("Error fetching cart:", error);
+    }
+  };
 
+  useEffect(() => {
     fetchCart();
   }, []);
 
@@ -36,10 +37,7 @@ const Cart = () => {
       await fetch(`http://localhost:8080/api/addToCart/deleteAllCartItem/${loginUser?.id}`, {
         method: "DELETE",
       });
-
-      const res = await fetch(`http://localhost:8080/api/addToCart/${loginUser?.id}`);
-      const data = await res.json();
-      setCartData(data); // agar state hai
+      setCartData([]);
     } catch (error) {
       console.log("Error clearing cart:", error);
     }
@@ -59,7 +57,7 @@ const Cart = () => {
           <p>Item</p>
           <p className="cart-hide">Price</p>
           <p>Quantity</p>
-          <p className="cart-hide">Total Price</p>
+          <p className="cart-hide">Total</p>
           <p>Remove</p>
         </div>
         <hr />
@@ -69,7 +67,7 @@ const Cart = () => {
             return <CartItem key={curElem.id} {...curElem} />;
           })}*/}
         {cartData?.map((curElem) => {
-          return <CartItem key={curElem.id} {...curElem} />;
+          return <CartItem key={curElem.id} {...curElem} fetchCart={fetchCart} />;
 
         })}
         {/* </div>  */}
@@ -82,6 +80,7 @@ const Cart = () => {
             clear cart
           </Button>
         </div>
+         <CartTotal cartData={cartData} />
         {/* order total amount */}
         {/* <div className="order-total--amount">
           <div className="order-total--subdata">

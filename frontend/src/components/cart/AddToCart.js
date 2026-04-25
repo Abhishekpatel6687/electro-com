@@ -46,18 +46,18 @@ const AddToCart = ({ product }) => {
     const res = await fetch(`http://localhost:8080/api/addToCart/${loginUser?.id}`, {
       method: "GET",
     });
-    const getAddToCardData = await res.json()
-    console.log(getAddToCardData, 'getAddToCardData')
-    const loginUserRole = loginUser.role;
-    console.log(loginUser,'hhh')
 
-    if(loginUserRole){
-      if(loginUserRole == "superadmin"){
-          navigate("/prodashboard/cart", { state: getAddToCardData })
-      }else{
-          navigate("/dashboard/cart", { state: getAddToCardData })
+    const getAddToCardData = await res.json()
+    
+    const loginUserRole = loginUser.role;
+
+    if (loginUserRole) {
+      if (loginUserRole == "superadmin") {
+        navigate("/prodashboard/cart", { state: getAddToCardData })
+      } else {
+        navigate("/dashboard/cart", { state: getAddToCardData })
       }
-    }else{
+    } else {
       navigate("/login")
     }
     // const finalCartData = {
@@ -158,6 +158,11 @@ const Wrapper = styled.section`
       font-size: 2.4rem;
       color: ${({ theme }) => theme.colors.btn};
     }
+      .cart-container {
+  display: flex;
+  justify-content: space-between;
+  gap: 30px;
+}
   }
 `;
 export default AddToCart;
