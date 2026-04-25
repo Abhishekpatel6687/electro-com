@@ -34,7 +34,7 @@ export const addToCart = async (req, res) => {
         const cart = cartResult.rows[0];
 
         res.status(201).json({
-            message: "Cart addessd successfully ✅",
+            message: "Cart added successfully ✅",
             cart,
         });
     } catch (error) {

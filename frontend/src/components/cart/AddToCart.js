@@ -43,19 +43,19 @@ const AddToCart = ({ product }) => {
     });
 
 
-    const getAddToCardData = await fetch(`http://localhost:8080/api/addToCart/${loginUser.id}`, {
+    const res = await fetch(`http://localhost:8080/api/addToCart/${loginUser?.id}`, {
       method: "GET",
     });
-    const ff = await getAddToCardData.json()
-    console.log(ff, 'jjj')
+    const getAddToCardData = await res.json()
+    console.log(getAddToCardData, 'getAddToCardData')
     const loginUserRole = loginUser.role;
     console.log(loginUser,'hhh')
 
     if(loginUserRole){
       if(loginUserRole == "superadmin"){
-          navigate("/prodashboard/cart")
+          navigate("/prodashboard/cart", { state: getAddToCardData })
       }else{
-          navigate("/dashboard/cart")
+          navigate("/dashboard/cart", { state: getAddToCardData })
       }
     }else{
       navigate("/login")

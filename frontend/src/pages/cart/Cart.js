@@ -1,12 +1,33 @@
 import styled from "styled-components";
 import { useCartContext } from "../../context/Cart_Context";
 import CartItem from "../../components/cart/CartItem";
-import { NavLink } from "react-router-dom";
+import { NavLink, useLocation } from "react-router-dom";
 import { Button } from "../../styles/Button";
 import FormatPrice from "../../Helpers/FormatPrice";
+import { useEffect, useState } from "react";
 
 const Cart = () => {
-  const { cart, clearCart, total_price, shipping_fee } = useCartContext();
+  // const { cart, clearCart, total_price, shipping_fee } = useCartContext();
+  const location = useLocation();
+  const userCartData = location.state;
+  
+  const loginUser = JSON.parse(localStorage.getItem("user"));
+
+  const [cartData, setCartData] = useState(userCartData || []);
+
+  useEffect(() => {
+    const fetchCart = async () => {
+      try {
+        const res = await fetch(`http://localhost:8080/api/addToCart/${loginUser?.id}`);
+        const data = await res.json();
+        setCartData(data);
+      } catch (error) {
+        console.log("Error fetching cart:", error);
+      }
+    };
+
+    fetchCart();
+  }, []);
 
   // if (cart.length === 0) {
   //   return (
@@ -31,8 +52,12 @@ const Cart = () => {
           {cart.map((curElem) => {
             console.log(cart);
             return <CartItem key={curElem.id} {...curElem} />;
-          })}
-        </div> */}
+          })}*/}
+        {cartData?.map((curElem) => {
+                        return <CartItem key={curElem.id} {...curElem} />;
+
+})}
+        {/* </div>  */}
         <hr />
         {/* <div className="cart-two-button">
           <NavLink to="/products">
