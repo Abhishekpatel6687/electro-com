@@ -9,11 +9,13 @@ import { useEffect, useState } from "react";
 const Cart = () => {
   // const { cart, clearCart, total_price, shipping_fee } = useCartContext();
   const location = useLocation();
-  const userCartData = location.state;
-  
-  const loginUser = JSON.parse(localStorage.getItem("user"));
+  const userCartData = location?.state;
+
+  const loginUser = JSON.parse(localStorage?.getItem("user"));
 
   const [cartData, setCartData] = useState(userCartData || []);
+
+  console.log(cartData, 'dddddddddddddddd ')
 
   useEffect(() => {
     const fetchCart = async () => {
@@ -29,6 +31,19 @@ const Cart = () => {
     fetchCart();
   }, []);
 
+  const clearCart = async () => {
+    try {
+      await fetch(`http://localhost:8080/api/addToCart/deleteAllCartItem/${loginUser?.id}`, {
+        method: "DELETE",
+      });
+
+      const res = await fetch(`http://localhost:8080/api/addToCart/${loginUser?.id}`);
+      const data = await res.json();
+      setCartData(data); // agar state hai
+    } catch (error) {
+      console.log("Error clearing cart:", error);
+    }
+  };
   // if (cart.length === 0) {
   //   return (
   //     <EmptyDiv>
@@ -54,19 +69,19 @@ const Cart = () => {
             return <CartItem key={curElem.id} {...curElem} />;
           })}*/}
         {cartData?.map((curElem) => {
-                        return <CartItem key={curElem.id} {...curElem} />;
+          return <CartItem key={curElem.id} {...curElem} />;
 
-})}
+        })}
         {/* </div>  */}
         <hr />
-        {/* <div className="cart-two-button">
+        <div className="cart-two-button">
           <NavLink to="/products">
             <Button> Continue Shopping </Button>
           </NavLink>
           <Button className="btn btn-clear" onClick={clearCart}>
             clear cart
           </Button>
-        </div> */}
+        </div>
         {/* order total amount */}
         {/* <div className="order-total--amount">
           <div className="order-total--subdata">

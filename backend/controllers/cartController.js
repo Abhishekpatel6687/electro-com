@@ -55,6 +55,7 @@ SELECT
   cart.id,
   cart.amount,
   products.name,
+  products.stock,
   products.price,
   products.company,
   product_images.image_url
@@ -102,6 +103,23 @@ export const deleteCartItem = async (req, res) => {
         await pool.query("DELETE FROM cart WHERE id=$1", [id]);
 
         res.json({ message: "Item removed" });
+    } catch (err) {
+        res.status(500).json(err);
+    }
+};
+
+
+export const deleteAllCartItem = async (req, res) => {
+    try {
+        const { userId } = req.params;
+
+        if (!userId) {
+            return res.status(400).json({ message: "User ID required" });
+        }
+
+        await pool.query("DELETE FROM cart WHERE user_id = $1", [userId]);
+
+        res.status(200).json({ message: "Cart cleared successfully ✅" });
     } catch (err) {
         res.status(500).json(err);
     }

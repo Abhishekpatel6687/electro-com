@@ -4,20 +4,37 @@ import CartAmountToggle from '../cart/CartAmountToggle';
 import { FaTrash } from 'react-icons/fa';
 import { useCartContext } from '../../context/Cart_Context';
 
-const CartItem = ({ id, name, image_url, color, price,stock, 
-  // amount
- }) => {
+const CartItem = ({ id, name, image_url, color, price, stock,
+  amount
+}) => {
 
   // const { removeItem, setDecrease, setIncrement } = useCartContext();
 
-  const [amount, setAmount] = useState(1)
+  const [amountt, setAmount] = useState(amount)
+
+  console.log(amountt, stock, "check increment");
+
   const setDecrease = () => {
-    amount > 1 ? setAmount(amount - 1) :setAmount(1);
+    amountt > 1 ? setAmount(amountt - 1) : setAmount(1);
   }
 
   const setIncrease = () => {
-    amount < stock ? setAmount(amount + 1) : setAmount(stock)
+    amountt < stock ? setAmount(amountt + 1) : setAmount(stock)
   }
+
+  const removeItem = async (id) => {
+    try {
+      await fetch(`http://localhost:8080/api/addToCart/deleteCartItem/${id}`, {
+        method: "DELETE",
+      });
+
+      // const res = await fetch(`http://localhost:8080/api/addToCart/${loginUser?.id}`);
+      // const data = await res.json();
+      // setCartData(data); // agar state hai
+    } catch (error) {
+      console.log("Error clearing cart:", error);
+    }
+  };
 
   return (
     <div className='cart-heading grid grid-five-column'>
@@ -41,9 +58,11 @@ const CartItem = ({ id, name, image_url, color, price,stock,
       </div>
       {/* Quantity */}
       <div>
-        <CartAmountToggle amount={amount} setDecrease={() => setDecrease(id)}
-        //  setIncrease={() => setIncrement(id)} 
-         />
+        <CartAmountToggle
+          amount={amountt}
+          setDecrease={setDecrease}
+          setIncrease={setIncrease}
+        />
       </div>
 
       {/* Subtotal */}
@@ -51,7 +70,7 @@ const CartItem = ({ id, name, image_url, color, price,stock,
         <p><FormatPrice price={price * amount} /></p>
       </div>
       <div>
-        {/* <FaTrash className='remove_icon' onClick={() => removeItem(id)} /> */}
+        <FaTrash className='remove_icon' onClick={() => removeItem(id)} />
       </div>
     </div>
   )
