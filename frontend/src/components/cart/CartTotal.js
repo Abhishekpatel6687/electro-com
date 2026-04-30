@@ -14,86 +14,89 @@ const CartTotal = ({ cartData }) => {
     const gst = subtotal * 0.18;
     const handling = 50;
     const total = subtotal + gst + handling;
-
+    const amut = subtotal
+    console.log(amut)
+//     const totalAmount = <FormatPrice price={total}/>
+// console.log(totalAmount,'totaltotaltotaltotaltotal')
     // 🔹 PAYMENT FUNCTION
-    //   const handlePayment = async () => {
-    //     try {
-    //       // ✅ 1. create order
-    //       const res = await fetch("http://localhost:8080/api/payment/create-order", {
-    //         method: "POST",
-    //         headers: {
-    //           "Content-Type": "application/json",
-    //         },
-    //         body: JSON.stringify({ amount: total }),
-    //       });
+      const handlePayment = async () => {
+        try {
+          // ✅ 1. create order
+          const res = await fetch("http://localhost:8080/api/payment/create-order", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ amount: amut }),
+          });
 
-    //       const order = await res.json();
+          const order = await res.json();
 
-    //       // ✅ 2. Razorpay options
-    //       const options = {
-    //         key: "YOUR_KEY_ID", // 🔥 apna key daalo
-    //         amount: order.amount,
-    //         currency: "INR",
-    //         name: "My Store",
-    //         description: "Order Payment",
-    //         order_id: order.id,
+          // ✅ 2. Razorpay options
+          const options = {
+            key: "YOUR_KEY_ID", // 🔥 apna key daalo
+            amount: order.amount,
+            currency: "INR",
+            name: "My Store",
+            description: "Order Payment",
+            order_id: order.id,
 
-    //         // ✅ 3. SUCCESS HANDLER
-    //         handler: async function (response) {
-    //           try {
-    //             // 🔹 verify payment backend se
-    //             const verifyRes = await fetch(
-    //               "http://localhost:8080/api/payment/verify-payment",
-    //               {
-    //                 method: "POST",
-    //                 headers: {
-    //                   "Content-Type": "application/json",
-    //                 },
-    //                 body: JSON.stringify(response),
-    //               }
-    //             );
+            // ✅ 3. SUCCESS HANDLER
+            handler: async function (response) {
+              try {
+                // 🔹 verify payment backend se
+                const verifyRes = await fetch(
+                  "http://localhost:8080/api/payment/verify-payment",
+                  {
+                    method: "POST",
+                    headers: {
+                      "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify(response),
+                  }
+                );
 
-    //             const data = await verifyRes.json();
+                const data = await verifyRes.json();
 
-    //             if (data.success) {
-    //               alert("Payment Successful ✅");
+                if (data.success) {
+                  alert("Payment Successful ✅");
 
-    //               // ✅ 4. CART CLEAR
-    //               await fetch(
-    //                 `http://localhost:8080/api/addToCart/deleteAllCartItem/${loginUser?.id}`,
-    //                 {
-    //                   method: "DELETE",
-    //                 }
-    //               );
+                  // ✅ 4. CART CLEAR
+                  await fetch(
+                    `http://localhost:8080/api/addToCart/deleteAllCartItem/${loginUser?.id}`,
+                    {
+                      method: "DELETE",
+                    }
+                  );
 
-    //               // 👉 optional redirect
-    //               window.location.href = "/dashboard/cart";
-    //             } else {
-    //               alert("Payment Verification Failed ❌");
-    //             }
-    //           } catch (err) {
-    //             console.log("Verify Error:", err);
-    //           }
-    //         },
+                  // 👉 optional redirect
+                  window.location.href = "/dashboard/cart";
+                } else {
+                  alert("Payment Verification Failed ❌");
+                }
+              } catch (err) {
+                console.log("Verify Error:", err);
+              }
+            },
 
-    //         prefill: {
-    //           name: "User",
-    //           email: "test@gmail.com",
-    //         },
+            prefill: {
+              name: "User",
+              email: "test@gmail.com",
+            },
 
-    //         theme: {
-    //           color: "#5a4bff",
-    //         },
-    //       };
+            theme: {
+              color: "#5a4bff",
+            },
+          };
 
-    //       // ✅ 5. OPEN PAYMENT
-    //       const rzp = new window.Razorpay(options);
-    //       rzp.open();
+          // ✅ 5. OPEN PAYMENT
+          const rzp = new window.Razorpay(options);
+          rzp.open();
 
-    //     } catch (error) {
-    //       console.log("Payment Error:", error);
-    //     }
-    //   };
+        } catch (error) {
+          console.log("Payment Error:", error);
+        }
+      };
 
     return (
         <Wrapper>
@@ -122,9 +125,9 @@ const CartTotal = ({ cartData }) => {
                     <p><FormatPrice price={total} /></p>
                 </div>
 
-                {/* <button className="buy-btn" onClick={handlePayment}>
+                <button className="buy-btn" onClick={handlePayment}>
           Proceed to Buy
-        </button> */}
+        </button>
             </div>
         </Wrapper>
     );
