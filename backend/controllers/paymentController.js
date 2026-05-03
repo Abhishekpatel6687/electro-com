@@ -34,8 +34,12 @@ export const createOrder = async (req, res) => {
 // 🔹 Verify Payment
 export const verifyPayment = async (req, res) => {
   try {
-    const { razorpay_order_id, razorpay_payment_id, razorpay_signature } =
-      req.body;
+    const {
+      razorpay_order_id,
+      razorpay_payment_id,
+      razorpay_signature,
+      userId,
+    } = req.body;
 
     const body = razorpay_order_id + "|" + razorpay_payment_id;
 
@@ -44,12 +48,8 @@ export const verifyPayment = async (req, res) => {
       .update(body.toString())
       .digest("hex");
 
-    if (expectedSignature === razorpay_signature) {
-      res.json({ success: true, message: "Payment Verified ✅" });
-    } else {
-      return res
-        .status(400)
-        .json({ success: false, message: "Invalid Payment ❌" });
+    if (expectedSignature !== razorpay_signature) {
+      return res.status(400).json({ success: false });
     }
 
     // ✅ Order update
@@ -75,8 +75,11 @@ export const verifyPayment = async (req, res) => {
       [razorpay_order_id],
     );
 
+    if (orderRes.rows.length === 0) {
+      return res.status(400).json({ message: "Order not found" });
+    }
+
     const orderId = orderRes.rows[0].id;
-    console.log(orderRes,'orderResorderResorderRes')
 
     // 📦 order_items me insert
 
@@ -84,16 +87,45 @@ export const verifyPayment = async (req, res) => {
       await pool.query(
         `INSERT INTO order_items (order_id, product_id, quantity, price)
          VALUES ($1, $2, $3, $4)`,
-        [orderId, item.product_id, item.amount, item.price],
+        [orderId, item.product_id, item.amount, Number(item.price)],
       );
     }
 
     // 🧹 Cart clear
     await pool.query("DELETE FROM cart WHERE user_id=$1", [userId]);
 
-    res.json({ success: true });
+    return res.json({ success: true, message: "Payment Verified ✅" });
   } catch (err) {
     console.log(err);
+    res.status(500).json(err);
+  }
+};
+
+export const getUserOrders = async (req, res) => {
+  try {
+    const { userId } = req.params;
+
+    const orders = await pool.query(`
+      SELECT 
+        o.id AS order_id,
+        o.amount,
+        o.status,
+        o.created_at,
+        oi.product_id,
+        oi.quantity,
+        oi.price,
+        p.name,
+        pi.image_url
+      FROM orders o
+      JOIN order_items oi ON o.id = oi.order_id
+      JOIN products p ON oi.product_id = p.id
+      LEFT JOIN product_images pi ON p.id = pi.product_id
+      WHERE o.user_id = $1
+      ORDER BY o.created_at DESC
+    `, [userId]);
+
+    res.json(orders.rows);
+  } catch (err) {
     res.status(500).json(err);
   }
 };

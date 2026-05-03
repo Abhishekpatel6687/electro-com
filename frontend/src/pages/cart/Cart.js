@@ -6,6 +6,7 @@ import { Button } from "../../styles/Button";
 import FormatPrice from "../../Helpers/FormatPrice";
 import { useEffect, useState } from "react";
 import CartTotal from "../../components/cart/CartTotal";
+import OrderList from "../order/orderList";
 
 const Cart = () => {
   // const { cart, clearCart, total_price, shipping_fee } = useCartContext();
@@ -15,8 +16,6 @@ const Cart = () => {
   const loginUser = JSON.parse(localStorage?.getItem("user"));
 
   const [cartData, setCartData] = useState(userCartData || []);
-
-  console.log(cartData, 'dddddddddddddddd ')
 
   const fetchCart = async () => {
     try {
@@ -105,6 +104,7 @@ const Cart = () => {
             </div>
           </div>
         </div> */}
+        {/* <OrderList/> */}
       </div>
     </Wrapper>
   );
