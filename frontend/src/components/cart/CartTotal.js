@@ -22,16 +22,10 @@ const CartTotal = ({ cartData }) => {
   const handlePayment = async () => {
     try {
       // ✅ 1. create order
-      const res = await API(
-        "/payment/create-order",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ amount: amut, userId: loginUser.id }),
-        },
-      );
+      const res = await API.post("/payment/create-order", {
+        amount: amut,
+        userId: loginUser.id,
+      });
 
       const order = await res.json();
 
@@ -47,18 +41,12 @@ const CartTotal = ({ cartData }) => {
         handler: async function (response) {
           try {
             // 🔹 verify payment backend se
-            const verifyRes = await API(
-              "/payment/verify-payment",
-              {
-                method: "POST",
-                headers: {
-                  "Content-Type": "application/json",
-                },
-                body: JSON.stringify({ ...response, userId: loginUser.id }),
-              },
-            );
+            const verifyRes = await API.post("/payment/verify-payment", {
+              ...response,
+              userId: loginUser.id,
+            });
 
-            const data = await verifyRes.json();
+            const data = await verifyRes.data;
 
             if (data.success) {
               alert("Payment Successful ✅");

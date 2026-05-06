@@ -1,36 +1,36 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
 import FormatPrice from "../../Helpers/FormatPrice";
-import CartAmountToggle from '../cart/CartAmountToggle';
-import { FaTrash } from 'react-icons/fa';
-import { useCartContext } from '../../context/Cart_Context';
-import CartTotal from './CartTotal';
-import API from '../../services/api';
+import CartAmountToggle from "../cart/CartAmountToggle";
+import { FaTrash } from "react-icons/fa";
+import { useCartContext } from "../../context/Cart_Context";
+import CartTotal from "./CartTotal";
+import API from "../../services/api";
 
-const CartItem = ({ id, name, image_url, color, price, stock,
-  amount, fetchCart
+const CartItem = ({
+  id,
+  name,
+  image_url,
+  color,
+  price,
+  stock,
+  amount,
+  fetchCart,
 }) => {
-
   // const { removeItem, setDecrease, setIncrement } = useCartContext();
 
-  const [amountt, setAmount] = useState(amount)
+  const [amountt, setAmount] = useState(amount);
 
   console.log(amountt, stock, "check increment");
 
   const updateCart = async (newAmount) => {
-    await API(`/addToCart/${id}`, {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ amount: newAmount }),
+    await API.put(`/addToCart/${id}`, {
+      amount: newAmount,
     });
 
     fetchCart(); // refresh data
   };
 
-
   const setIncrease = async () => {
-
     if (amountt < stock) {
       const newAmount = amountt + 1;
       setAmount(newAmount);
@@ -38,34 +38,26 @@ const CartItem = ({ id, name, image_url, color, price, stock,
     }
   };
 
-
   const setDecrease = async () => {
-
     if (amountt > 1) {
       const newAmount = amountt - 1;
       setAmount(newAmount);
     }
   };
 
-
   const removeItem = async (id) => {
     try {
-      await API(`/addToCart/deleteCartItem/${id}`, {
-        method: "DELETE",
-      });
+      await API.delete(`/addToCart/deleteCartItem/${id}`);
       fetchCart();
-      // const res = await API(`/addToCart/${loginUser?.id}`);
-      // const data = await res.json();
-      // setCartData(data); // agar state hai
     } catch (error) {
       console.log("Error clearing cart:", error);
     }
   };
 
   return (
-    <div className='cart-heading grid grid-five-column'>
+    <div className="cart-heading grid grid-five-column">
       <div style={{ display: "flex", gap: "1rem" }}>
-        <div className='cart-image--name'>
+        <div className="cart-image--name">
           <img src={`http://localhost:8080${image_url}`} alt={id} width={60} />
         </div>
         <div>
@@ -77,7 +69,7 @@ const CartItem = ({ id, name, image_url, color, price, stock,
         </div>
       </div>
       {/* Price */}
-      <div className='cart-hide'>
+      <div className="cart-hide">
         <p>
           <FormatPrice price={price} />
         </p>
@@ -93,14 +85,16 @@ const CartItem = ({ id, name, image_url, color, price, stock,
       </div>
 
       {/* Subtotal */}
-      <div className='cart-hide'>
-        <p><FormatPrice price={price * amountt} /></p>
+      <div className="cart-hide">
+        <p>
+          <FormatPrice price={price * amountt} />
+        </p>
       </div>
       <div>
-        <FaTrash className='remove_icon' onClick={() => removeItem(id)} />
+        <FaTrash className="remove_icon" onClick={() => removeItem(id)} />
       </div>
     </div>
-  )
-}
+  );
+};
 
 export default CartItem;

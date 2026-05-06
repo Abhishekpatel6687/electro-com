@@ -15,14 +15,12 @@ const Cart = () => {
 
   const loginUser = JSON.parse(localStorage?.getItem("user"));
   const [cartData, setCartData] = useState(userCartData || []);
-  const [active, setActive] = useState("");
+  const [activeTab, setActiveTab] = useState("");
 
   const fetchCart = async () => {
     try {
-      const res = await API(
-        `/addToCart/${loginUser?.id}`,
-      );
-      const data = await res.json();
+      const res = await API.get(`/addToCart/${loginUser?.id}`);
+      const data = await res.data;
       setCartData(data);
     } catch (error) {
       console.log("Error fetching cart:", error);
@@ -35,12 +33,7 @@ const Cart = () => {
 
   const clearCart = async () => {
     try {
-      await API(
-        `/addToCart/deleteAllCartItem/${loginUser?.id}`,
-        {
-          method: "DELETE",
-        },
-      );
+      await API.delete(`/addToCart/deleteAllCartItem/${loginUser?.id}`);
       setCartData([]);
     } catch (error) {
       console.log("Error clearing cart:", error);
@@ -51,28 +44,13 @@ const Cart = () => {
     const loginUserRole = loginUser.role;
 
     if (loginUserRole && toggleType == "addToCart") {
-      setActive(toggleType);
-     const res = fetchCart;
-     console.log(res,'resres')
-
-      const getAddToCardData = await res.json();
-      if (loginUserRole == "superadmin") {
-        navigate("/prodashboard/cart", { state: getAddToCardData });
-      } else {
-        navigate("/dashboard/cart", { state: getAddToCardData });
-      }
+      setActiveTab(toggleType);
+      fetchCart();
     } else if (loginUserRole && toggleType == "orderList") {
-      setActive(toggleType);
+      setActiveTab(toggleType);
     }
   };
-  if (cartData.length === 0) {
-    return (
-      <EmptyDiv>
-        <h3>No Cart in Items</h3>
-      </EmptyDiv>
-    );
-  }
-  console.log(cartData, "cartDatacartData");
+
   return (
     <Wrapper>
       <div className="container">
@@ -90,7 +68,8 @@ const Cart = () => {
             </div>
           </div>
         </div>
-        {active == "addToCart" ? (
+
+        {activeTab == "addToCart" ? (
           <>
             <div className="cart_heading grid grid-five-column">
               <p>Item</p>

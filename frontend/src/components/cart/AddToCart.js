@@ -35,16 +35,16 @@ const AddToCart = ({ product }) => {
     amount,
     product,
   ) => {
-    console.log(id, amount, product, "jjjjj", loginUser?.id);
     if (loginUser?.id) {
       await API.post("/addToCart", {
-        user_id: loginUser?.id,
-        product_id: id,
-        amount,
+          user_id: loginUser?.id,
+          product_id: id,
+          amount,
+      
       });
       const res = await API.get(`/addToCart/${loginUser?.id}`);
 
-      const getAddToCardData = res.data;
+      const getAddToCardData = await res.data;
       const loginUserRole = loginUser.role;
 
       if (loginUserRole == "superadmin") {

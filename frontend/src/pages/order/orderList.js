@@ -11,10 +11,10 @@ const OrderList = () => {
   useEffect(() => {
     const fetchOrders = async () => {
       try {
-        const res = await API(
+        const res = await API.get(
           `/payment/${loginUser?.id}`
         );
-        const data = await res.json();
+        const data = await res.data;
         setOrders(data);
       } catch (err) {
         console.log(err);
