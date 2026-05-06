@@ -3,16 +3,19 @@ import { useState } from "react";
 import styled from "styled-components";
 import { FaCheck } from "react-icons/fa";
 import CartAmountToggle from "./CartAmountToggle";
-import { json, NavLink,useNavigate } from "react-router-dom";
+import { json, NavLink, useNavigate } from "react-router-dom";
 import { Button } from "../../styles/Button";
 import { useCartContext } from "../../context/Cart_Context";
+import API from "../../services/api";
 
 const AddToCart = ({ product }) => {
   const { addToCart } = useCartContext();
-  const navigate = useNavigate()
-  const { id,
-    //  colors, 
-    stock } = product;
+  const navigate = useNavigate();
+  const {
+    id,
+    //  colors,
+    stock,
+  } = product;
   // const [color, setColor] = useState(colors[0]);
   const [amount, setAmount] = useState(1);
 
@@ -26,39 +29,31 @@ const AddToCart = ({ product }) => {
 
   const loginUser = JSON.parse(localStorage.getItem("user"));
 
-  const handleSubmitAddToCart = async (id,
-    // color, 
-    amount, product) => {
-
-    await fetch("http://localhost:8080/api/addToCart", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
+  const handleSubmitAddToCart = async (
+    id,
+    // color,
+    amount,
+    product,
+  ) => {
+    console.log(id, amount, product, "jjjjj", loginUser?.id);
+    if (loginUser?.id) {
+      await API.post("/addToCart", {
         user_id: loginUser?.id,
         product_id: id,
         amount,
-      }),
-    });
+      });
+      const res = await API.get(`/addToCart/${loginUser?.id}`);
 
+      const getAddToCardData = res.data;
+      const loginUserRole = loginUser.role;
 
-    const res = await fetch(`http://localhost:8080/api/addToCart/${loginUser?.id}`, {
-      method: "GET",
-    });
-
-    const getAddToCardData = await res.json()
-    
-    const loginUserRole = loginUser.role;
-
-    if (loginUserRole) {
       if (loginUserRole == "superadmin") {
-        navigate("/prodashboard/cart", { state: getAddToCardData })
+        navigate("/prodashboard/cart", { state: getAddToCardData });
       } else {
-        navigate("/dashboard/cart", { state: getAddToCardData })
+        navigate("/dashboard/cart", { state: getAddToCardData });
       }
     } else {
-      navigate("/login")
+      navigate("/login");
     }
     // const finalCartData = {
     //   ...product,   // pura product data
@@ -66,7 +61,7 @@ const AddToCart = ({ product }) => {
     // };
 
     // console.log(finalCartData, "finalCartData ✅");
-  }
+  };
 
   return (
     <Wrapper>
@@ -100,9 +95,19 @@ const AddToCart = ({ product }) => {
       {/* <NavLink  onClick={() => handleSubmitAddToCartid,
         // color, 
         amount, product)}> */}
-      <Button onClick={() => handleSubmitAddToCart(id,
-        // color, 
-        amount, product)} className="btn">Add To Cart</Button>
+      <Button
+        onClick={() =>
+          handleSubmitAddToCart(
+            id,
+            // color,
+            amount,
+            product,
+          )
+        }
+        className="btn"
+      >
+        Add To Cart
+      </Button>
       {/* </NavLink> */}
     </Wrapper>
   );
@@ -158,11 +163,11 @@ const Wrapper = styled.section`
       font-size: 2.4rem;
       color: ${({ theme }) => theme.colors.btn};
     }
-      .cart-container {
-  display: flex;
-  justify-content: space-between;
-  gap: 30px;
-}
+    .cart-container {
+      display: flex;
+      justify-content: space-between;
+      gap: 30px;
+    }
   }
 `;
 export default AddToCart;

@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import FormatPrice from "../../Helpers/FormatPrice";
+import API from "../../services/api";
 
 const CartTotal = ({ cartData }) => {
   const loginUser = JSON.parse(localStorage.getItem("user"));
@@ -21,8 +22,8 @@ const CartTotal = ({ cartData }) => {
   const handlePayment = async () => {
     try {
       // ✅ 1. create order
-      const res = await fetch(
-        "http://localhost:8080/api/payment/create-order",
+      const res = await API(
+        "/payment/create-order",
         {
           method: "POST",
           headers: {
@@ -46,8 +47,8 @@ const CartTotal = ({ cartData }) => {
         handler: async function (response) {
           try {
             // 🔹 verify payment backend se
-            const verifyRes = await fetch(
-              "http://localhost:8080/api/payment/verify-payment",
+            const verifyRes = await API(
+              "/payment/verify-payment",
               {
                 method: "POST",
                 headers: {

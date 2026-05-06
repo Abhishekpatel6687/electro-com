@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import FormatPrice from "../../Helpers/FormatPrice";
+import API from "../../services/api";
 
 const OrderList = () => {
   const [orders, setOrders] = useState([]);
@@ -10,8 +11,8 @@ const OrderList = () => {
   useEffect(() => {
     const fetchOrders = async () => {
       try {
-        const res = await fetch(
-          `http://localhost:8080/api/payment/${loginUser?.id}`
+        const res = await API(
+          `/payment/${loginUser?.id}`
         );
         const data = await res.json();
         setOrders(data);

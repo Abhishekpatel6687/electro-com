@@ -4,6 +4,7 @@ import CartAmountToggle from '../cart/CartAmountToggle';
 import { FaTrash } from 'react-icons/fa';
 import { useCartContext } from '../../context/Cart_Context';
 import CartTotal from './CartTotal';
+import API from '../../services/api';
 
 const CartItem = ({ id, name, image_url, color, price, stock,
   amount, fetchCart
@@ -16,7 +17,7 @@ const CartItem = ({ id, name, image_url, color, price, stock,
   console.log(amountt, stock, "check increment");
 
   const updateCart = async (newAmount) => {
-    await fetch(`http://localhost:8080/api/addToCart/${id}`, {
+    await API(`/addToCart/${id}`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
@@ -49,11 +50,11 @@ const CartItem = ({ id, name, image_url, color, price, stock,
 
   const removeItem = async (id) => {
     try {
-      await fetch(`http://localhost:8080/api/addToCart/deleteCartItem/${id}`, {
+      await API(`/addToCart/deleteCartItem/${id}`, {
         method: "DELETE",
       });
       fetchCart();
-      // const res = await fetch(`http://localhost:8080/api/addToCart/${loginUser?.id}`);
+      // const res = await API(`/addToCart/${loginUser?.id}`);
       // const data = await res.json();
       // setCartData(data); // agar state hai
     } catch (error) {

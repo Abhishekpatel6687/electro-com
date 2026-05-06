@@ -1,25 +1,27 @@
 import styled from "styled-components";
-import { useCartContext } from "../../context/Cart_Context";
 import CartItem from "../../components/cart/CartItem";
-import { NavLink, useLocation } from "react-router-dom";
+import { NavLink, useLocation, useNavigate } from "react-router-dom";
 import { Button } from "../../styles/Button";
 import FormatPrice from "../../Helpers/FormatPrice";
 import { useEffect, useState } from "react";
 import CartTotal from "../../components/cart/CartTotal";
 import OrderList from "../order/orderList";
+import API from "../../services/api";
 
 const Cart = () => {
-  // const { cart, clearCart, total_price, shipping_fee } = useCartContext();
   const location = useLocation();
+  const navigate = useNavigate();
   const userCartData = location?.state;
 
   const loginUser = JSON.parse(localStorage?.getItem("user"));
-
   const [cartData, setCartData] = useState(userCartData || []);
+  const [active, setActive] = useState("");
 
   const fetchCart = async () => {
     try {
-      const res = await fetch(`http://localhost:8080/api/addToCart/${loginUser?.id}`);
+      const res = await API(
+        `/addToCart/${loginUser?.id}`,
+      );
       const data = await res.json();
       setCartData(data);
     } catch (error) {
@@ -33,78 +35,91 @@ const Cart = () => {
 
   const clearCart = async () => {
     try {
-      await fetch(`http://localhost:8080/api/addToCart/deleteAllCartItem/${loginUser?.id}`, {
-        method: "DELETE",
-      });
+      await API(
+        `/addToCart/deleteAllCartItem/${loginUser?.id}`,
+        {
+          method: "DELETE",
+        },
+      );
       setCartData([]);
     } catch (error) {
       console.log("Error clearing cart:", error);
     }
   };
-  // if (cart.length === 0) {
-  //   return (
-  //     <EmptyDiv>
-  //       <h3>No Cart in Items</h3>
-  //     </EmptyDiv>
-  //   );
-  // }
 
+  const handleToggleButton = async (toggleType) => {
+    const loginUserRole = loginUser.role;
+
+    if (loginUserRole && toggleType == "addToCart") {
+      setActive(toggleType);
+     const res = fetchCart;
+     console.log(res,'resres')
+
+      const getAddToCardData = await res.json();
+      if (loginUserRole == "superadmin") {
+        navigate("/prodashboard/cart", { state: getAddToCardData });
+      } else {
+        navigate("/dashboard/cart", { state: getAddToCardData });
+      }
+    } else if (loginUserRole && toggleType == "orderList") {
+      setActive(toggleType);
+    }
+  };
+  if (cartData.length === 0) {
+    return (
+      <EmptyDiv>
+        <h3>No Cart in Items</h3>
+      </EmptyDiv>
+    );
+  }
+  console.log(cartData, "cartDatacartData");
   return (
     <Wrapper>
       <div className="container">
-        <div className="cart_heading grid grid-five-column">
-          <p>Item</p>
-          <p className="cart-hide">Price</p>
-          <p>Quantity</p>
-          <p className="cart-hide">Total</p>
-          <p>Remove</p>
-        </div>
-        <hr />
-        {/* <div className="cart-item">
-          {cart.map((curElem) => {
-            console.log(cart);
-            return <CartItem key={curElem.id} {...curElem} />;
-          })}*/}
-        {cartData?.map((curElem) => {
-          return <CartItem key={curElem.id} {...curElem} fetchCart={fetchCart} />;
-
-        })}
-        {/* </div>  */}
-        <hr />
-        <div className="cart-two-button">
-          <NavLink to="/products">
-            <Button> Continue Shopping </Button>
-          </NavLink>
-          <Button className="btn btn-clear" onClick={clearCart}>
-            clear cart
-          </Button>
-        </div>
-         <CartTotal cartData={cartData} />
-        {/* order total amount */}
-        {/* <div className="order-total--amount">
-          <div className="order-total--subdata">
-            <div>
-              <p>Subtotal:</p>
-              <p>
-                <FormatPrice price={total_price} />
-              </p>
+        <div className="buttonContainer">
+          <div className="toggleButton">
+            <div className="btnCard">
+              <Button onClick={() => handleToggleButton("addToCart")}>
+                Cart List
+              </Button>
             </div>
-            <div>
-              <p>shipping fee:</p>
-              <p>
-                <FormatPrice price={shipping_fee} />
-              </p>
-            </div>
-            <hr />
-            <div>
-              <p>order total:</p>
-              <p>
-                <FormatPrice price={shipping_fee + total_price} />
-              </p>
+            <div className="btnOrder">
+              <Button onClick={() => handleToggleButton("orderList")}>
+                Order List
+              </Button>
             </div>
           </div>
-        </div> */}
-        {/* <OrderList/> */}
+        </div>
+        {active == "addToCart" ? (
+          <>
+            <div className="cart_heading grid grid-five-column">
+              <p>Item</p>
+              <p className="cart-hide">Price</p>
+              <p>Quantity</p>
+              <p className="cart-hide">Total</p>
+              <p>Remove</p>
+            </div>
+            <hr />
+            {cartData?.map((curElem) => {
+              return (
+                <CartItem key={curElem.id} {...curElem} fetchCart={fetchCart} />
+              );
+            })}
+            {/* </div>  */}
+            <hr />
+            <div className="cart-two-button">
+              <NavLink to="/products">
+                <Button> Continue Shopping </Button>
+              </NavLink>
+              <Button className="btn btn-clear" onClick={clearCart}>
+                clear cart
+              </Button>
+            </div>
+            <CartTotal cartData={cartData} />
+          </>
+        ) : (
+          <OrderList />
+        )}
       </div>
     </Wrapper>
   );
@@ -123,7 +138,21 @@ const EmptyDiv = styled.div`
 `;
 
 const Wrapper = styled.section`
-  padding: 9rem 0;
+  padding: 4rem 0;
+
+  .buttonContainer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding-bottom: 36px;
+  }
+  .toggleButton {
+    background: gray;
+    padding: 16px;
+    border-radius: 36px;
+    display: flex;
+    gap: 12px;
+  }
 
   .grid-four-column {
     grid-template-columns: repeat(4, 1fr);
