@@ -37,6 +37,8 @@ export const addProduct = async (req, res) => {
     const product = productResult.rows[0];
 
     // 2️⃣ Image insert karo agar file aayi ho
+    
+      // for (const file of req.files) {
     if (req.file) {
       const imageUrl = `/uploads/products/${req.file.filename}`;
 

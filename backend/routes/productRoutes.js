@@ -9,7 +9,8 @@ const router = express.Router();
 
 router.post(
   "/",
-  upload.single("image"), // 👈 middleware use
+  // upload.single("image"), // 👈 middleware use
+  upload.array("images", 5), // 👈 multiple images
   addProduct
 );
 

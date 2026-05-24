@@ -17,8 +17,9 @@ const ProductForm = () => {
   });
   const navigate = useNavigate();
 
-  const [image, setImage] = useState(null);
-  const [preview, setPreview] = useState(null);
+  const [images, setImages] = useState([]);
+  const [previews, setPreviews] = useState([]);
+  console.log(images, "ffff", previews);
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -29,28 +30,43 @@ const ProductForm = () => {
   };
 
   const handleImage = (e) => {
-    const file = e.target.files[0];
-    setImage(file);
-    setPreview(URL.createObjectURL(file));
+    const files = e.target.files;
+    const filesArray = Array.from(files);
+    setImages((prev) => [...prev, filesArray]);
+
+    const previewUrls = filesArray.map((file) => URL.createObjectURL(file));
+    // setPreviews((prev) => [...prev, ...previewUrls]);
+    setImages((prev) => [...prev, ...filesArray]);
+  };
+
+  const removeImage = (index) => {
+    setImages((prev) => prev.filter((_, i) => i !== index));
+
+    setPreviews((prev) => prev.filter((_, i) => i !== index));
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (!image) return alert("Image required");
-
+    if (images.length === 0) {
+      return alert("At least one image required");
+    }
     const formData = new FormData();
 
     Object.keys(form).forEach((key) => {
       formData.append(key, form[key]);
     });
 
-    formData.append("image", image);
+    // formData.append("image", image);
+
+    images.forEach((img) => {
+      formData.append("images", img);
+    });
 
     try {
       const res = await API.post("/products", formData);
       alert(res.data.message);
-      
+
       setForm({
         name: "",
         company: "",
@@ -62,10 +78,10 @@ const ProductForm = () => {
         featured: false,
         category: "",
       });
-      
-      setImage(null);
-      setPreview(null);
-      navigate("/products")
+
+      setImages([]);
+      setPreviews([]);
+      navigate("/products");
     } catch (err) {
       alert(err.response?.data?.message);
     }
@@ -157,12 +173,39 @@ const ProductForm = () => {
               Featured Product
             </label>
           </div>
+           {images.length < 5 ? (
+            <input
+              type="file"
+              accept="image/*"
+              multiple
+              onChange={handleImage}
+            />
+          ): "Maximum 5 images add You are alredy add"}
 
-          <input type="file" accept="image/*" onChange={handleImage} />
+          {/* {previews.length > 0 && (
+            <div className="preview-container">
+              {previews.map((img, index) => (
+                <div className="preview" key={index}>
+                  <img src={img} alt="preview" />
+                </div>
+              ))}
+            </div>
+          )} */}
+          {previews.length > 0 && (
+            <div className="preview-container">
+              {previews.map((img, index) => (
+                <div className="preview" key={index}>
+                  <img src={img} alt="preview" />
 
-          {preview && (
-            <div className="preview">
-              <img src={preview} alt="preview" />
+                  <button
+                    type="button"
+                    className="remove-btn"
+                    onClick={() => removeImage(index)}
+                  >
+                    ✕
+                  </button>
+                </div>
+              ))}
             </div>
           )}
 
@@ -241,15 +284,37 @@ const Wrapper = styled.div`
     background: #224abe;
   }
 
+  .preview-container {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-top: 15px;
+  }
+
   .preview {
-    text-align: center;
+    position: relative;
   }
 
   .preview img {
-    width: 150px;
-    height: 150px;
+    width: 100px;
+    height: 100px;
     object-fit: cover;
-    border-radius: 15px;
-    border: 1px solid #ddd;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+  }
+
+  .remove-btn {
+    position: absolute;
+    top: -8px;
+    right: -8px;
+    width: 24px;
+    height: 24px;
+    border: none;
+    border-radius: 50%;
+    background: red;
+    color: white;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: bold;
   }
 `;
