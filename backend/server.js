@@ -32,7 +32,6 @@ app.use(cookieParser());
 // Serve uploads folder correctly
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
-initializeTables();
 
 // Routes
 app.use("/api/auth", authRoutes);
@@ -74,9 +73,22 @@ app.get("/get-cookie", (req, res) => {
   res.send(name);
 });
 
+
 app.get("/ab", (req, res) => {
-  console.log("req.cookies", req.cookies); // ⭐ debug
+  console.log("req.cookies", req.cookies);
   res.json(req.cookies);
 });
 
-app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+const startServer = async () => {
+  try {
+    await initializeTables();
+
+    app.listen(PORT, () => {
+      console.log(`Server running on port ${PORT}`);
+    });
+  } catch (error) {
+    console.error("Failed to start server:", error);
+  }
+};
+
+startServer();

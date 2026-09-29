@@ -1,7 +1,8 @@
 import styled from "styled-components";
 import CartItem from "../../components/cart/CartItem";
-import { NavLink, useLocation } from "react-router-dom";
+import { NavLink, useLocation, useNavigate } from "react-router-dom";
 import { Button } from "../../styles/Button";
+import FormatPrice from "../../Helpers/FormatPrice";
 import { useEffect, useState } from "react";
 import CartTotal from "../../components/cart/CartTotal";
 import OrderList from "../order/orderList";
@@ -9,141 +10,91 @@ import API from "../../services/api";
 
 const Cart = () => {
   const location = useLocation();
-
+  const navigate = useNavigate();
   const userCartData = location?.state;
 
-  const loginUser = JSON.parse(localStorage.getItem("user"));
-
-  // Default Cart Tab Open
-  const [activeTab, setActiveTab] = useState("addToCart");
-
+  const loginUser = JSON.parse(localStorage?.getItem("user"));
   const [cartData, setCartData] = useState(userCartData || []);
-  const [loading, setLoading] = useState(false);
+  const [activeTab, setActiveTab] = useState("");
 
-  // ================= FETCH CART =================
   const fetchCart = async () => {
     try {
-      setLoading(true);
-
       const res = await API.get(`/addToCart/${loginUser?.id}`);
-
-      setCartData(res?.data || []);
+      const data = await res.data;
+      setCartData(data);
     } catch (error) {
       console.log("Error fetching cart:", error);
-    } finally {
-      setLoading(false);
     }
   };
 
-  // ================= INITIAL LOAD =================
   useEffect(() => {
-    if (loginUser?.id) {
-      fetchCart();
-    }
+    fetchCart();
   }, []);
 
-  // ================= CLEAR CART =================
   const clearCart = async () => {
     try {
       await API.delete(`/addToCart/deleteAllCartItem/${loginUser?.id}`);
-
       setCartData([]);
     } catch (error) {
       console.log("Error clearing cart:", error);
     }
   };
 
-  // ================= TOGGLE TAB =================
   const handleToggleButton = async (toggleType) => {
-    setActiveTab(toggleType);
+    const loginUserRole = loginUser.role;
 
-    if (toggleType === "addToCart") {
+    if (loginUserRole && toggleType == "addToCart") {
+      setActiveTab(toggleType);
       fetchCart();
+    } else if (loginUserRole && toggleType == "orderList") {
+      setActiveTab(toggleType);
     }
   };
 
   return (
     <Wrapper>
       <div className="container">
-        {/* ================= TOP BUTTONS ================= */}
         <div className="buttonContainer">
           <div className="toggleButton">
-            <button
-              className={`tabBtn ${activeTab === "addToCart" ? "active" : ""}`}
-              onClick={() => handleToggleButton("addToCart")}
-            >
-              Cart List
-            </button>
-
-            <button
-              className={`tabBtn ${activeTab === "orderList" ? "active" : ""}`}
-              onClick={() => handleToggleButton("orderList")}
-            >
-              Order List
-            </button>
+            <div className="btnCard">
+              <Button onClick={() => handleToggleButton("addToCart")}>
+                Cart List
+              </Button>
+            </div>
+            <div className="btnOrder">
+              <Button onClick={() => handleToggleButton("orderList")}>
+                Order List
+              </Button>
+            </div>
           </div>
         </div>
 
-        {/* ================= CART TAB ================= */}
-        {activeTab === "addToCart" ? (
+        {activeTab == "addToCart" ? (
           <>
-            {loading ? (
-              <div className="loading">
-                <h2>Loading...</h2>
-              </div>
-            ) : cartData?.length === 0 ? (
-              <EmptyDiv>
-                <div>
-                  <h3>Your Cart Is Empty</h3>
-
-                  <NavLink to="/products">
-                    <Button>Shop Now</Button>
-                  </NavLink>
-                </div>
-              </EmptyDiv>
-            ) : (
-              <>
-                {/* ================= HEADING ================= */}
-                <div className="cart_heading grid grid-five-column">
-                  <p>Item</p>
-                  <p className="cart-hide">Price</p>
-                  <p>Quantity</p>
-                  <p className="cart-hide">Total</p>
-                  <p>Remove</p>
-                </div>
-
-                <hr />
-
-                {/* ================= CART ITEMS ================= */}
-                <div className="cart-item">
-                  {cartData?.map((curElem) => {
-                    return (
-                      <CartItem
-                        key={curElem.id}
-                        {...curElem}
-                        fetchCart={fetchCart}
-                      />
-                    );
-                  })}
-                </div>
-
-                <hr />
-
-                {/* ================= BUTTONS ================= */}
-                <div className="cart-two-button">
-                  <NavLink to="/products">
-                    <Button>Continue Shopping</Button>
-                  </NavLink>
-
-                  <Button className="btn-clear" onClick={clearCart}>
-                    Clear Cart
-                  </Button>
-                </div>
-
-                {/* ================= TOTAL ================= */}
-                <CartTotal cartData={cartData} />
-              </>
-            )}
+            <div className="cart_heading grid grid-five-column">
+              <p>Item</p>
+              <p className="cart-hide">Price</p>
+              <p>Quantity</p>
+              <p className="cart-hide">Total</p>
+              <p>Remove</p>
+            </div>
+            <hr />
+            {cartData?.map((curElem) => {
+              return (
+                <CartItem key={curElem.id} {...curElem} fetchCart={fetchCart} />
+              );
+            })}
+            {/* </div>  */}
+            <hr />
+            <div className="cart-two-button">
+              <NavLink to="/products">
+                <Button> Continue Shopping </Button>
+              </NavLink>
+              <Button className="btn btn-clear" onClick={clearCart}>
+                clear cart
+              </Button>
+            </div>
+            <CartTotal cartData={cartData} />
           </>
         ) : (
           <OrderList />
@@ -153,21 +104,18 @@ const Cart = () => {
   );
 };
 
-// ================= EMPTY CART =================
 const EmptyDiv = styled.div`
   display: grid;
   place-items: center;
-  min-height: 50vh;
-  text-align: center;
+  height: 50vh;
 
   h3 {
-    font-size: 3rem;
-    margin-bottom: 2rem;
-    color: #222;
+    font-size: 4.2rem;
+    text-transform: capitalize;
+    font-weight: 300;
   }
 `;
 
-// ================= MAIN STYLES =================
 const Wrapper = styled.section`
   padding: 4rem 0;
 
@@ -175,128 +123,184 @@ const Wrapper = styled.section`
     display: flex;
     align-items: center;
     justify-content: center;
-    margin-bottom: 3rem;
+    padding-bottom: 36px;
   }
-
   .toggleButton {
-    background: #f5f5f5;
-    padding: 10px;
-    border-radius: 50px;
+    background: gray;
+    padding: 16px;
+    border-radius: 36px;
     display: flex;
-    gap: 10px;
-    flex-wrap: wrap;
+    gap: 12px;
   }
 
-  .tabBtn {
-    border: none;
-    outline: none;
-    padding: 12px 28px;
-    border-radius: 30px;
-    background: transparent;
-    font-size: 1.6rem;
-    font-weight: 600;
-    cursor: pointer;
-    transition: 0.3s ease;
-    color: #333;
-  }
-
-  .tabBtn.active {
-    background: #6254f3;
-    color: white;
+  .grid-four-column {
+    grid-template-columns: repeat(4, 1fr);
   }
 
   .grid-five-column {
-    display: grid;
     grid-template-columns: repeat(4, 1fr) 0.3fr;
     text-align: center;
     align-items: center;
-    gap: 1rem;
   }
-
-  .cart_heading {
-    margin-bottom: 1rem;
-    font-weight: 600;
-    font-size: 1.6rem;
+  .cart-heading {
+    text-align: center;
+    // text-transform: uppercase;
   }
-
   hr {
-    margin: 1rem 0;
-    border: 0.1rem solid #eee;
+    margin-top: 1rem;
   }
-
   .cart-item {
+    padding: 3.2rem 0;
     display: flex;
     flex-direction: column;
-    gap: 2rem;
-    padding: 2rem 0;
+    gap: 3.2rem;
+  }
+
+  .cart-user--profile {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 1.2rem;
+    margin-bottom: 5.4rem;
+
+    img {
+      width: 8rem;
+      height: 8rem;
+      border-radius: 50%;
+    }
+    h2 {
+      font-size: 2.4rem;
+    }
+  }
+  .cart-user--name {
+    text-transform: capitalize;
+  }
+  .cart-image--name {
+    /* background-color: red; */
+    align-items: center;
+    // display: grid;
+    // gap: 1rem;
+    grid-template-columns: 0.4fr 1fr;
+    text-transform: capitalize;
+    text-align: left;
+    img {
+      max-width: 5rem;
+      height: 5rem;
+      object-fit: contain;
+      color: transparent;
+    }
+
+    .color-div {
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+      gap: 1rem;
+
+      .color-style {
+        width: 1.4rem;
+        height: 1.4rem;
+
+        border-radius: 50%;
+      }
+    }
   }
 
   .cart-two-button {
     margin-top: 2rem;
     display: flex;
     justify-content: space-between;
-    gap: 2rem;
-    flex-wrap: wrap;
+
+    .btn-clear {
+      background-color: #e74c3c;
+    }
   }
 
-  .btn-clear {
-    background: #e74c3c;
+  .amount-toggle {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 2.4rem;
+    font-size: 1.4rem;
+
+    button {
+      border: none;
+      background-color: #fff;
+      cursor: pointer;
+    }
+
+    .amount-style {
+      font-size: 2.4rem;
+      color: ${({ theme }) => theme.colors.btn};
+    }
   }
-  .amount-style {
-    font-size: 2.4rem;
-    color: ${({ theme }) => theme.colors.btn};
-  }
+
   .remove_icon {
     font-size: 1.6rem;
     color: #e74c3c;
     cursor: pointer;
   }
 
-  .loading {
-    display: grid;
-    place-items: center;
-    min-height: 40vh;
-  }
-  .amount-toggle {
+  .order-total--amount {
+    width: 100%;
+    margin: 4.8rem 0;
+    text-transform: capitalize;
     display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 1rem;
-  }
-  /* ================= MOBILE ================= */
+    flex-direction: column;
+    justify-content: flex-end;
+    align-items: flex-end;
 
-  @media (max-width: ${({ theme }) => theme.media.mobile}) {
-    padding: 2rem 0;
-
-    .grid-five-column {
-      grid-template-columns: 1.5fr 1fr 0.5fr;
-      gap: 1rem;
+    .order-total--subdata {
+      border: 0.1rem solid #f0f0f0;
+      display: flex;
+      flex-direction: column;
+      gap: 1.8rem;
+      padding: 3.2rem;
+    }
+    div {
+      display: flex;
+      gap: 3.2rem;
+      justify-content: space-between;
     }
 
+    div:last-child {
+      background-color: #fafafa;
+    }
+
+    div p:last-child {
+      font-weight: bold;
+      color: ${({ theme }) => theme.colors.heading};
+    }
+  }
+
+  @media (max-width: ${({ theme }) => theme.media.mobile}) {
+    .grid-five-column {
+      grid-template-columns: 1.5fr 1fr 0.5fr;
+    }
     .cart-hide {
       display: none;
     }
 
     .cart-two-button {
-      flex-direction: column;
+      margin-top: 2rem;
+      display: flex;
+      justify-content: space-between;
+      gap: 2.2rem;
     }
 
-    .cart-two-button a,
-    .cart-two-button button {
+    .order-total--amount {
       width: 100%;
-    }
+      text-transform: capitalize;
+      justify-content: flex-start;
+      align-items: flex-start;
 
-    .toggleButton {
-      width: 100%;
-      justify-content: center;
-    }
-
-    .tabBtn {
-      width: 100%;
-    }
-
-    h3 {
-      font-size: 2.2rem;
+      .order-total--subdata {
+        width: 100%;
+        border: 0.1rem solid #f0f0f0;
+        display: flex;
+        flex-direction: column;
+        gap: 1.8rem;
+        padding: 3.2rem;
+      }
     }
   }
 `;

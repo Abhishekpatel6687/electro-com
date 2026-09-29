@@ -1,82 +1,56 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import FormatPrice from "../../Helpers/FormatPrice";
 import CartAmountToggle from "../cart/CartAmountToggle";
 import { FaTrash } from "react-icons/fa";
+import { useCartContext } from "../../context/Cart_Context";
+import CartTotal from "./CartTotal";
 import API from "../../services/api";
 
 const CartItem = ({
   id,
   name,
   image_url,
+  color,
   price,
   stock,
   amount,
   fetchCart,
 }) => {
-  // ================= LOCAL STATE =================
+  // const { removeItem, setDecrease, setIncrement } = useCartContext();
+
   const [amountt, setAmount] = useState(amount);
-  const [loading, setLoading] = useState(false);
 
-  // ================= SYNC STATE =================
-  useEffect(() => {
-    setAmount(amount);
-  }, [amount]);
+  console.log(amountt, stock, "check increment");
 
-  // ================= UPDATE CART =================
   const updateCart = async (newAmount) => {
-    try {
-      setLoading(true);
+    await API.put(`/addToCart/${id}`, {
+      amount: newAmount,
+    });
 
-      await API.put(`/addToCart/${id}`, {
-        amount: newAmount,
-      });
-
-      fetchCart();
-    } catch (error) {
-      console.log("Update cart error:", error);
-    } finally {
-      setLoading(false);
-    }
+    fetchCart(); // refresh data
   };
 
-  // ================= INCREASE =================
   const setIncrease = async () => {
-    if (loading) return;
-
     if (amountt < stock) {
       const newAmount = amountt + 1;
-
       setAmount(newAmount);
-
-      await updateCart(newAmount);
+      updateCart(newAmount);
     }
   };
 
-  // ================= DECREASE =================
   const setDecrease = async () => {
-    if (loading) return;
-
     if (amountt > 1) {
       const newAmount = amountt - 1;
-
       setAmount(newAmount);
-
-      await updateCart(newAmount);
     }
   };
 
-  // ================= REMOVE ITEM =================
   const removeItem = async (id) => {
     try {
-      setLoading(true);
-
       await API.delete(`/addToCart/deleteCartItem/${id}`);
-
       fetchCart();
     } catch (error) {
-      console.log("Remove cart item error:", error);
-    } finally {
-      setLoading(false);
+      console.log("Error clearing cart:", error);
     }
   };
 
@@ -94,15 +68,13 @@ const CartItem = ({
             </div> */}
         </div>
       </div>
-
-      {/* ================= PRICE ================= */}
+      {/* Price */}
       <div className="cart-hide">
         <p>
           <FormatPrice price={price} />
         </p>
       </div>
-
-      {/* ================= QUANTITY ================= */}
+      {/* Quantity */}
       <div>
         <CartAmountToggle
           amount={amountt}
@@ -112,14 +84,12 @@ const CartItem = ({
         />
       </div>
 
-      {/* ================= SUBTOTAL ================= */}
+      {/* Subtotal */}
       <div className="cart-hide">
         <p>
           <FormatPrice price={price * amountt} />
         </p>
       </div>
-
-      {/* ================= REMOVE ================= */}
       <div>
         <FaTrash className="remove_icon" onClick={() => removeItem(id)} />
       </div>
