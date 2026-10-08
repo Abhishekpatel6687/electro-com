@@ -2,6 +2,21 @@ import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import { createUser, findUserByEmail } from "../models/userModel.js";
 
+const setAuthCookie = (res, user) => {
+  const token = jwt.sign(
+    { id: user.id, role: user.role },
+    process.env.JWT_SECRET,
+    { expiresIn: "1d" }
+  );
+
+  res.cookie("token", token, {
+    httpOnly: true,
+    secure: false,
+    sameSite: "lax",
+    maxAge: 24 * 60 * 60 * 1000,
+  });
+};
+
 export const register = async (req, res) => {
   try {
     const { username, email, password } = req.body;
@@ -18,6 +33,8 @@ export const register = async (req, res) => {
     const hashedPassword = await bcrypt.hash(password, 10);
 
     const user = await createUser(username, email, hashedPassword);
+
+    setAuthCookie(res, user);
 
     res.status(201).json({
       message: "User registered successfully",
@@ -46,19 +63,7 @@ export const login = async (req, res) => {
     if (!isMatch) {
       return res.status(400).json({ message: "Invalid password" });
     }
-console.log("JWT_SECRET:", process.env.JWT_SECRET);
-    const token = jwt.sign(
-      { id: user.id, role: user.role },
-      process.env.JWT_SECRET,
-      { expiresIn: "1d" }
-    );
-
-    res.cookie("token", token, {
-      httpOnly: true,
-      secure: false,
-      sameSite: "lax",
-      maxAge: 24 * 60 * 60 * 1000,
-    });
+    setAuthCookie(res, user);
 
     res.json({ message: "Login successful" });
 

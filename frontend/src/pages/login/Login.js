@@ -21,6 +21,17 @@ function AuthPage() {
     password: "",
   });
 
+  const handleUserRedirect = (user) => {
+  setUser(user);
+
+  localStorage.setItem("user", JSON.stringify(user));
+
+  if (user.role === "superadmin") {
+    navigate("/prodashboard");
+  } else {
+    navigate("/dashboard");
+  }
+};
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -32,33 +43,29 @@ function AuthPage() {
       await API.post("/auth/login", upperCaseUserData);
 
       const userRes = await API.get("/auth/me");
-    console.log(userRes,'userResddd')
-      setUser(userRes.data.user);
 
-localStorage.setItem("user", JSON.stringify(userRes.data.user));
-      
+      handleUserRedirect(userRes.data.user);
 
-      if (userRes.data.user.role === "superadmin") {
-        navigate("/prodashboard");
-      } else {
-        navigate("/dashboard");
-      }
     } catch (err) {
       alert(err.response?.data?.message);
     }
   };
 
   const handleRegister = async (e) => {
+    e.preventDefault();
     const upperCaseRegisterForm = {
       email: registerForm.email.toUpperCase(),
       password: registerForm.password,
       username: registerForm.username,
     };
-    e.preventDefault();
     try {
       await API.post("/auth/register", upperCaseRegisterForm);
-      alert("Registered Successfully");
-      setIsLogin(true);
+      // alert("Registered Successfully");
+
+      const userRes = await API.get("/auth/me");
+
+      handleUserRedirect(userRes.data.user);
+      
     } catch (err) {
       alert(err.response?.data?.message);
     }
